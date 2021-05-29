@@ -1,0 +1,35 @@
+{
+  "name": "woongs_video",
+  "version": "1.0.0",
+  "description": "This project is video set like youtube with using node.js, typescript else...",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dongwoongoh/Woongs_video.git"
+  },
+  "scripts": {
+    "start": "nodemon -L --exec 'ts-node' dist/index.js"
+  },
+  "author": "WOONG<integral5137@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dongwoongoh/Woongs_video/issues"
+  },
+  "homepage": "https://github.com/dongwoongoh/Woongs_video#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "source-map-support": "^0.5.19"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-typescript": "^7.13.0",
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.6.1",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0"
+  }
+}
