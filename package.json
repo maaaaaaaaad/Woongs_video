@@ -7,7 +7,7 @@
     "url": "git+https://github.com/dongwoongoh/Woongs_video.git"
   },
   "scripts": {
-    "start": "nodemon -L --exec 'ts-node' dist/index.js"
+    "start": "nodemon -L --exec 'ts-node' dist/server.js"
   },
   "author": "WOONG<integral5137@gmail.com>",
   "license": "MIT",
