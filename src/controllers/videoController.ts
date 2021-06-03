@@ -1,23 +1,25 @@
-export const popular = (req: any, res: any) => {
+import { Request, Response } from "express";
+
+export const popular = (req: Request, res: Response) => {
   return res.send("Popular");
 };
 
-export const see = (req: any, res: any) => {
+export const see = (req: Request, res: Response) => {
   return res.send("Video see");
 };
 
-export const edit = (req: any, res: any) => {
+export const edit = (req: Request, res: Response) => {
   return res.send("Video Edit");
 };
 
-export const search = (req: any, res: any) => {
+export const search = (req: Request, res: Response) => {
   return res.send("login");
 };
 
-export const upload = (req: any, res: any) => {
+export const upload = (req: Request, res: Response) => {
   return res.send("upload");
 };
 
-export const deleteVideo = (req: any, res: any) => {
+export const deleteVideo = (req: Request, res: Response) => {
   return res.send("delete video");
 };

@@ -4,8 +4,10 @@ import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
 
+type App = express.Application;
+
 const PORT: number = 1779;
-const app = express();
+const app: App = express();
 const logger = morgan("dev");
 app.use(logger);
 
