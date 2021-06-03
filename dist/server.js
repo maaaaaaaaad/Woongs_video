@@ -10,6 +10,8 @@ const userRouter_1 = __importDefault(require("./routers/userRouter"));
 const videoRouter_1 = __importDefault(require("./routers/videoRouter"));
 const PORT = 1779;
 const app = express_1.default();
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
 const logger = morgan_1.default("dev");
 app.use(logger);
 app.use("/", globalRouter_1.default);
