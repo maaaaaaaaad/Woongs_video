@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.see = exports.logout = exports.login = exports.remove = exports.edit = exports.join = void 0;
-const join = (req, res) => {
-    return res.send("Join");
-};
+exports.watch = exports.logout = exports.login = exports.remove = exports.edit = exports.join = void 0;
+const join = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.join = join;
 const edit = (req, res) => {
     return res.send("Edit Profile");
@@ -21,8 +19,8 @@ const logout = (req, res) => {
     return res.send("logout");
 };
 exports.logout = logout;
-const see = (req, res) => {
-    return res.send("see");
+const watch = (req, res) => {
+    return res.send("wat");
 };
-exports.see = see;
+exports.watch = watch;
 //# sourceMappingURL=userController.js.map

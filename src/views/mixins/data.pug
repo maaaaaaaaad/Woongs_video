@@ -1,0 +1,9 @@
+mixin data(video)
+  div
+    a(href=`video/${video.id}`)=video.title 
+    ul 
+      li Rating : #{video.rating}
+      li Comments : #{video.comments}
+      li CreatedAt : #{video.createdAt}
+      li Views : #{video.views}
+
