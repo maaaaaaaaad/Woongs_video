@@ -56,8 +56,15 @@ export const watch = (req: Request, res: Response) => {
   return res.render("watch", { pageTitle: `Watch ${video.title}`, video });
 };
 
-export const edit = (req: Request, res: Response) => {
-  return res.send(`Edit ${req.params.id} Video`);
+export const getEdit = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const video = videos[+id - 1];
+  return res.render("edit", { pageTitle: `Edit ${video.title}`, video });
+};
+
+export const postEdit = (req: Request, res: Response) => {
+  console.log("Hello Post!!!!!!!");
+  return res.end();
 };
 
 export const deleteVideo = (req: Request, res: Response) => {

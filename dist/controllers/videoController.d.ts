@@ -3,5 +3,6 @@ export declare const popular: (req: Request, res: Response) => void;
 export declare const search: (req: Request, res: Response) => Response<any, Record<string, any>>;
 export declare const upload: (req: Request, res: Response) => Response<any, Record<string, any>>;
 export declare const watch: (req: Request, res: Response) => void;
-export declare const edit: (req: Request, res: Response) => Response<any, Record<string, any>>;
+export declare const getEdit: (req: Request, res: Response) => void;
+export declare const postEdit: (req: Request, res: Response) => void;
 export declare const deleteVideo: (req: Request, res: Response) => Response<any, Record<string, any>>;

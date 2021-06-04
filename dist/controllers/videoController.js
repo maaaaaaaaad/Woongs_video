@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideo = exports.edit = exports.watch = exports.upload = exports.search = exports.popular = void 0;
+exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.upload = exports.search = exports.popular = void 0;
 let videos = [
     {
         id: 1,
@@ -45,10 +45,17 @@ const watch = (req, res) => {
     return res.render("watch", { pageTitle: `Watch ${video.title}`, video });
 };
 exports.watch = watch;
-const edit = (req, res) => {
-    return res.send(`Edit ${req.params.id} Video`);
+const getEdit = (req, res) => {
+    const { id } = req.params;
+    const video = videos[+id - 1];
+    return res.render("edit", { pageTitle: `Edit ${video.title}`, video });
 };
-exports.edit = edit;
+exports.getEdit = getEdit;
+const postEdit = (req, res) => {
+    console.log("Hello Post!!!!!!!");
+    return res.end();
+};
+exports.postEdit = postEdit;
 const deleteVideo = (req, res) => {
     console.log(req.params);
     return res.send("delete video");
