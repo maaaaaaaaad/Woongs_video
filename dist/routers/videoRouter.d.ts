@@ -1,2 +1,3 @@
-declare const videoRouter: import("express-serve-static-core").Router;
+import { Router } from "express";
+declare const videoRouter: Router;
 export default videoRouter;

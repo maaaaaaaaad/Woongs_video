@@ -1,4 +1,5 @@
 import express from "express";
+import "./db";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
 import userRouter from "./routers/userRouter";
@@ -13,6 +14,7 @@ app.set("views", process.cwd() + "/src/views");
 
 const logger = morgan("dev");
 app.use(logger);
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/", globalRouter);
 app.use("/user", userRouter);
