@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 require("./db");
+require("./models/Video");
 const morgan_1 = __importDefault(require("morgan"));
 const globalRouter_1 = __importDefault(require("./routers/globalRouter"));
 const userRouter_1 = __importDefault(require("./routers/userRouter"));
