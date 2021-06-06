@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.upload = exports.search = exports.home = void 0;
+exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
 const Video_1 = __importDefault(require("../models/Video"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,10 +29,26 @@ const search = (req, res) => {
     return res.send("login");
 };
 exports.search = search;
-const upload = (req, res) => {
-    return res.send("upload");
+const getUpload = (req, res) => {
+    return res.render("upload", { pageTitle: `Upload` });
 };
-exports.upload = upload;
+exports.getUpload = getUpload;
+const postUpload = (req, res) => {
+    const { title, discription, hashtags } = req.body;
+    const videoData = new Video_1.default({
+        title,
+        discription,
+        createdAt: Date.now(),
+        hashtags: hashtags.split(",").map((tag) => `#${tag}`),
+        metaDB: {
+            views: 0,
+            rating: 0,
+        },
+    });
+    console.log(videoData);
+    return res.redirect("/");
+};
+exports.postUpload = postUpload;
 const watch = (req, res) => {
     const { id } = req.params;
     return res.render("watch", { pageTitle: `Watch` });

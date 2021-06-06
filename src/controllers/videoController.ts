@@ -15,8 +15,24 @@ export const search = (req: Request, res: Response) => {
   return res.send("login");
 };
 
-export const upload = (req: Request, res: Response) => {
-  return res.send("upload");
+export const getUpload = (req: Request, res: Response) => {
+  return res.render("upload", { pageTitle: `Upload` });
+};
+
+export const postUpload = (req: Request, res: Response) => {
+  const { title, discription, hashtags } = req.body;
+  const videoData = new VideoModel({
+    title,
+    discription,
+    createdAt: Date.now(),
+    hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
+    metaDB: {
+      views: 0,
+      rating: 0,
+    },
+  });
+  console.log(videoData);
+  return res.redirect("/");
 };
 
 export const watch = (req: Request, res: Response) => {
