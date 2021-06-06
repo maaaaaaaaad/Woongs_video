@@ -1,36 +1,30 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.upload = exports.search = exports.popular = void 0;
-let videos = [
-    {
-        id: 1,
-        title: "fir Video",
-        rating: 4,
-        comments: 21,
-        createdAt: "2 min ago",
-        views: 108,
-    },
-    {
-        id: 2,
-        title: "sec Video",
-        rating: 1,
-        comments: 0,
-        createdAt: "5 min ago",
-        views: 1,
-    },
-    {
-        id: 3,
-        title: "thr Video",
-        rating: 2,
-        comments: 170,
-        createdAt: "33 min ago",
-        views: 1098,
-    },
-];
-const popular = (req, res) => {
-    return res.render("home", { pageTitle: "Home", videos });
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-exports.popular = popular;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.upload = exports.search = exports.home = void 0;
+const Video_1 = __importDefault(require("../models/Video"));
+const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const videos = yield Video_1.default.find({});
+        return res.render("home", { pageTitle: "Home", videos });
+    }
+    catch (error) {
+        console.log("Error", error);
+        return res.send("Error! not found data");
+    }
+});
+exports.home = home;
 const search = (req, res) => {
     return res.send("login");
 };
@@ -41,20 +35,17 @@ const upload = (req, res) => {
 exports.upload = upload;
 const watch = (req, res) => {
     const { id } = req.params;
-    const video = videos[+id - 1];
-    return res.render("watch", { pageTitle: `Watch ${video.title}`, video });
+    return res.render("watch", { pageTitle: `Watch` });
 };
 exports.watch = watch;
 const getEdit = (req, res) => {
     const { id } = req.params;
-    const video = videos[+id - 1];
-    return res.render("edit", { pageTitle: `Edit ${video.title}`, video });
+    return res.render("edit", { pageTitle: `Edit` });
 };
 exports.getEdit = getEdit;
 const postEdit = (req, res) => {
     const id = req.params.id;
     const title = req.body.title;
-    videos[+id - 1].title = title;
     return res.redirect(`/video/${id}`);
 };
 exports.postEdit = postEdit;

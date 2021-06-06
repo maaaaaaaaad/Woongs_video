@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-export declare const popular: (req: Request, res: Response) => void;
+export declare const home: (req: Request, res: Response) => Promise<void | Response<any, Record<string, any>>>;
 export declare const search: (req: Request, res: Response) => Response<any, Record<string, any>>;
 export declare const upload: (req: Request, res: Response) => Response<any, Record<string, any>>;
 export declare const watch: (req: Request, res: Response) => void;
