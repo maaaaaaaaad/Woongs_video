@@ -25,16 +25,14 @@ export const postUpload = async (req: Request, res: Response) => {
     const videoData = new VideoModel({
       title,
       discription,
-      createdAt: Date.now(),
       hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
-      metaDB: {
-        views: 0,
-        rating: 0,
-      },
     });
     await videoData.save();
   } catch (error) {
-    console.log("Please check your video form", error);
+    return res.render("upload", {
+      pageTitle: `Upload`,
+      errorMessage: `Error! ${error._message}`,
+    });
   }
 
   return res.redirect("/");

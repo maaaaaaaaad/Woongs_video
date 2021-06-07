@@ -1,6 +1,9 @@
 extends base.pug
 
 block content
+  if errorMessage
+    h5 #{errorMessage}
+
   form(method="POST") 
     input(type="text", name="title", placeholder="Video Title", 
           autocomplete="off",required)

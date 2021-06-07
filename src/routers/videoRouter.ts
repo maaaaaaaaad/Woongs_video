@@ -11,7 +11,7 @@ import {
 const videoRouter: Router = express.Router();
 
 videoRouter.route<string>("/upload").get(getUpload).post(postUpload);
-videoRouter.get("/:id(\\d+)", watch);
+videoRouter.get("/:id", watch);
 videoRouter.route<string>("/:id(\\d+)/edit").get(getEdit).post(postEdit);
 videoRouter.get("/:id(\\d+)/delete", deleteVideo);
 

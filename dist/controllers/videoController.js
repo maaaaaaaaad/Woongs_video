@@ -39,17 +39,15 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         const videoData = new Video_1.default({
             title,
             discription,
-            createdAt: Date.now(),
             hashtags: hashtags.split(",").map((tag) => `#${tag}`),
-            metaDB: {
-                views: 0,
-                rating: 0,
-            },
         });
         yield videoData.save();
     }
     catch (error) {
-        console.log("Please check your video form", error);
+        return res.render("upload", {
+            pageTitle: `Upload`,
+            errorMessage: `Error! ${error._message}`,
+        });
     }
     return res.redirect("/");
 });
