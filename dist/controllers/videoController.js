@@ -36,7 +36,7 @@ exports.getUpload = getUpload;
 const postUpload = (req, res) => {
     const { title, discription, hashtags } = req.body;
     const videoData = new Video_1.default({
-        title,
+        title: 5,
         discription,
         createdAt: Date.now(),
         hashtags: hashtags.split(",").map((tag) => `#${tag}`),

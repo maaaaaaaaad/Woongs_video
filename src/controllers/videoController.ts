@@ -22,7 +22,7 @@ export const getUpload = (req: Request, res: Response) => {
 export const postUpload = (req: Request, res: Response) => {
   const { title, discription, hashtags } = req.body;
   const videoData = new VideoModel({
-    title,
+    title: 5,
     discription,
     createdAt: Date.now(),
     hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
