@@ -19,19 +19,24 @@ export const getUpload = (req: Request, res: Response) => {
   return res.render("upload", { pageTitle: `Upload` });
 };
 
-export const postUpload = (req: Request, res: Response) => {
+export const postUpload = async (req: Request, res: Response) => {
   const { title, discription, hashtags } = req.body;
-  const videoData = new VideoModel({
-    title: 5,
-    discription,
-    createdAt: Date.now(),
-    hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
-    metaDB: {
-      views: 0,
-      rating: 0,
-    },
-  });
-  console.log(videoData);
+  try {
+    const videoData = new VideoModel({
+      title,
+      discription,
+      createdAt: Date.now(),
+      hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
+      metaDB: {
+        views: 0,
+        rating: 0,
+      },
+    });
+    await videoData.save();
+  } catch (error) {
+    console.log("Please check your video form", error);
+  }
+
   return res.redirect("/");
 };
 

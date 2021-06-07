@@ -1,6 +1,17 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const videoSchema: mongoose.Schema = new mongoose.Schema({
+type VideoForm = {
+  title: string;
+  discription: string;
+  createdAt: Date;
+  hashtags: [{ type: string }];
+  metaDB: {
+    views: number;
+    rating: number;
+  };
+};
+
+const videoSchema = new mongoose.Schema<VideoForm>({
   title: String,
   discription: String,
   createdAt: Date,
@@ -11,9 +22,6 @@ const videoSchema: mongoose.Schema = new mongoose.Schema({
   },
 });
 
-const VideoModel: mongoose.Model<string, Schema> = mongoose.model(
-  "Video",
-  videoSchema
-);
+const VideoModel = mongoose.model<VideoForm>("Video", videoSchema);
 
 export default VideoModel;

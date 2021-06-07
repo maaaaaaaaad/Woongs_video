@@ -33,21 +33,26 @@ const getUpload = (req, res) => {
     return res.render("upload", { pageTitle: `Upload` });
 };
 exports.getUpload = getUpload;
-const postUpload = (req, res) => {
+const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, discription, hashtags } = req.body;
-    const videoData = new Video_1.default({
-        title: 5,
-        discription,
-        createdAt: Date.now(),
-        hashtags: hashtags.split(",").map((tag) => `#${tag}`),
-        metaDB: {
-            views: 0,
-            rating: 0,
-        },
-    });
-    console.log(videoData);
+    try {
+        const videoData = new Video_1.default({
+            title,
+            discription,
+            createdAt: Date.now(),
+            hashtags: hashtags.split(",").map((tag) => `#${tag}`),
+            metaDB: {
+                views: 0,
+                rating: 0,
+            },
+        });
+        yield videoData.save();
+    }
+    catch (error) {
+        console.log("Please check your video form", error);
+    }
     return res.redirect("/");
-};
+});
 exports.postUpload = postUpload;
 const watch = (req, res) => {
     const { id } = req.params;
