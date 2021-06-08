@@ -20,11 +20,11 @@ export const getUpload = (req: Request, res: Response) => {
 };
 
 export const postUpload = async (req: Request, res: Response) => {
-  const { title, discription, hashtags } = req.body;
+  const { title, description, hashtags } = req.body;
   try {
     const videoData = new VideoModel({
       title,
-      discription,
+      description,
       hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
     });
     await videoData.save();
@@ -38,10 +38,13 @@ export const postUpload = async (req: Request, res: Response) => {
   return res.redirect("/");
 };
 
-export const watch = (req: Request, res: Response) => {
+export const watch = async (req: Request, res: Response) => {
   const { id } = req.params;
-
-  return res.render("watch", { pageTitle: `Watch` });
+  const selectedVideo = await VideoModel.findById(id);
+  return res.render("watch", {
+    pageTitle: `${selectedVideo!.title}`,
+    selectedVideo,
+  });
 };
 
 export const getEdit = (req: Request, res: Response) => {

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 type VideoForm = {
   title: string;
-  discription: string;
+  description: string;
   createdAt: Date;
   hashtags?: [{ type: string }] | null;
   metaDB: {
@@ -13,7 +13,7 @@ type VideoForm = {
 
 const videoSchema = new mongoose.Schema<VideoForm>({
   title: { type: String, required: true, trim: true, maxLength: 40 },
-  discription: { type: String, required: true, trim: true, minLength: 20 },
+  description: { type: String, required: true, trim: true, minLength: 20 },
   createdAt: { type: Date, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],
   metaDB: {

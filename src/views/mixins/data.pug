@@ -2,7 +2,7 @@ mixin data(video)
   div
     a(href=`video/${video._id}`)=video.title 
     ul
-      li Discription : #{video.discription} 
+      li Description : #{video.description} 
       li Hash Tags : #{video.hashtags}
       li Rating : #{video.metaDB.rating}
       li Views : #{video.metaDB.views}

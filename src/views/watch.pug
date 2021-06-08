@@ -1,4 +1,7 @@
 extends base.pug
 
 block content
-  h3 Watch!
+  div 
+    p=selectedVideo.description 
+    small=selectedVideo.createdAt
+  a(href=`${selectedVideo._id}/edit`) Edit Video &rarr;

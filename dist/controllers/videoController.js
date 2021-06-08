@@ -34,11 +34,11 @@ const getUpload = (req, res) => {
 };
 exports.getUpload = getUpload;
 const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, discription, hashtags } = req.body;
+    const { title, description, hashtags } = req.body;
     try {
         const videoData = new Video_1.default({
             title,
-            discription,
+            description,
             hashtags: hashtags.split(",").map((tag) => `#${tag}`),
         });
         yield videoData.save();
@@ -52,10 +52,14 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     return res.redirect("/");
 });
 exports.postUpload = postUpload;
-const watch = (req, res) => {
+const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    return res.render("watch", { pageTitle: `Watch` });
-};
+    const selectedVideo = yield Video_1.default.findById(id);
+    return res.render("watch", {
+        pageTitle: `${selectedVideo.title}`,
+        selectedVideo,
+    });
+});
 exports.watch = watch;
 const getEdit = (req, res) => {
     const { id } = req.params;
