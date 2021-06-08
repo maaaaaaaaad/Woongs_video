@@ -55,8 +55,3 @@ export const postEdit = (req: Request, res: Response) => {
   const title: string = req.body.title;
   return res.redirect(`/video/${id}`);
 };
-
-export const deleteVideo = (req: Request, res: Response) => {
-  console.log(req.params);
-  return res.send("delete video");
-};

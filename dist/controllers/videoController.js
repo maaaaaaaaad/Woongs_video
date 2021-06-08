@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
+exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
 const Video_1 = __importDefault(require("../models/Video"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -68,9 +68,4 @@ const postEdit = (req, res) => {
     return res.redirect(`/video/${id}`);
 };
 exports.postEdit = postEdit;
-const deleteVideo = (req, res) => {
-    console.log(req.params);
-    return res.send("delete video");
-};
-exports.deleteVideo = deleteVideo;
 //# sourceMappingURL=videoController.js.map

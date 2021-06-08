@@ -4,6 +4,5 @@ include mixins/data.pug
 block content
   nav
     a(href="video/upload") Upload Video 
-  h2 You will see popular videos in here!
   each video in videos
     +data(video)

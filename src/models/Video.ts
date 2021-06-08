@@ -12,10 +12,10 @@ type VideoForm = {
 };
 
 const videoSchema = new mongoose.Schema<VideoForm>({
-  title: { type: String, required: true },
-  discription: { type: String, required: true },
+  title: { type: String, required: true, trim: true, maxLength: 40 },
+  discription: { type: String, required: true, trim: true, minLength: 20 },
   createdAt: { type: Date, required: true, default: Date.now },
-  hashtags: [{ type: String }],
+  hashtags: [{ type: String, trim: true }],
   metaDB: {
     views: { type: Number, default: 0, required: true },
     rating: { type: Number, default: 0, required: true },
