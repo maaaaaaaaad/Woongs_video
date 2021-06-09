@@ -7,8 +7,10 @@ block content
   form(method="POST") 
     input(type="text", name="title", placeholder="Video Title", 
           autocomplete="off",required maxlength=40)
+
     input(type="text", name="description", placeholder="Description",
      required, autocomplete="off" minlength=20)
+     
     input(type="text", name="hashtags", placeholder="Hashtags separated by comma",
      required, autocomplete="off")    
     input(type="submit", value="Upload")

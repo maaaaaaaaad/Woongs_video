@@ -40,21 +40,45 @@ export const postUpload = async (req: Request, res: Response) => {
 
 export const watch = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const selectedVideo = await VideoModel.findById(id);
-  return res.render("watch", {
-    pageTitle: `${selectedVideo!.title}`,
+  const selectedVideo = await VideoModel.findById(id).exec();
+
+  if (selectedVideo === null) {
+    return res.render("404", { pageTitle: "Not Found" });
+  } else {
+    return res.render("watch", {
+      pageTitle: `${selectedVideo.title}`,
+      selectedVideo,
+    });
+  }
+};
+
+export const getEdit = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const selectedVideo = await VideoModel.findById(id).exec();
+  if (selectedVideo === null) {
+    return res.render("404", { pageTitle: "Not Found" });
+  }
+  return res.render("edit", {
+    pageTitle: `Edit ${selectedVideo.title}`,
     selectedVideo,
   });
 };
 
-export const getEdit = (req: Request, res: Response) => {
+export const postEdit = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const { title, description, hashtags } = req.body;
+  const selectedVideo = await VideoModel.exists({ _id: id });
 
-  return res.render("edit", { pageTitle: `Edit` });
-};
+  if (selectedVideo === false) {
+    return res.render("404", { pageTitle: "Not Found" });
+  }
+  await VideoModel.findByIdAndUpdate(id, {
+    title,
+    description,
+    hashtags: hashtags
+      .split(",")
+      .map((tag: string) => (tag.startsWith("#") ? tag : `#${tag}`)),
+  });
 
-export const postEdit = (req: Request, res: Response) => {
-  const id: string = req.params.id;
-  const title: string = req.body.title;
   return res.redirect(`/video/${id}`);
 };

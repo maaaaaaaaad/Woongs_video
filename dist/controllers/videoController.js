@@ -54,22 +54,45 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.postUpload = postUpload;
 const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const selectedVideo = yield Video_1.default.findById(id);
-    return res.render("watch", {
-        pageTitle: `${selectedVideo.title}`,
+    const selectedVideo = yield Video_1.default.findById(id).exec();
+    if (selectedVideo === null) {
+        return res.render("404", { pageTitle: "Not Found" });
+    }
+    else {
+        return res.render("watch", {
+            pageTitle: `${selectedVideo.title}`,
+            selectedVideo,
+        });
+    }
+});
+exports.watch = watch;
+const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const selectedVideo = yield Video_1.default.findById(id).exec();
+    if (selectedVideo === null) {
+        return res.render("404", { pageTitle: "Not Found" });
+    }
+    return res.render("edit", {
+        pageTitle: `Edit ${selectedVideo.title}`,
         selectedVideo,
     });
 });
-exports.watch = watch;
-const getEdit = (req, res) => {
-    const { id } = req.params;
-    return res.render("edit", { pageTitle: `Edit` });
-};
 exports.getEdit = getEdit;
-const postEdit = (req, res) => {
-    const id = req.params.id;
-    const title = req.body.title;
+const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { title, description, hashtags } = req.body;
+    const selectedVideo = yield Video_1.default.exists({ _id: id });
+    if (selectedVideo === false) {
+        return res.render("404", { pageTitle: "Not Found" });
+    }
+    yield Video_1.default.findByIdAndUpdate(id, {
+        title,
+        description,
+        hashtags: hashtags
+            .split(",")
+            .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
+    });
     return res.redirect(`/video/${id}`);
-};
+});
 exports.postEdit = postEdit;
 //# sourceMappingURL=videoController.js.map
