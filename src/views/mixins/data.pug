@@ -1,11 +1,12 @@
 mixin data(video)
   div
     a(href=`video/${video._id}`)=video.title 
-    ul
-      li Description : #{video.description} 
-      li Hash Tags : #{video.hashtags}
-      li Rating : #{video.metaDB.rating}
-      li Views : #{video.metaDB.views}
-      li CreatedAt : #{video.createdAt}
+    p Description : #{video.description}
+    p Rating : #{video.metaDB.rating}
+    p Views : #{video.metaDB.views}
+    p CreatedAt : #{video.createdAt}
+    ul 
+      each hash in video.hashtags 
+        li=hash
     hr
         

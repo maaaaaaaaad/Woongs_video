@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
-const Video_1 = __importDefault(require("../models/Video"));
+exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
+const HashForm_1 = require("../models/HashForm");
+const VideoForm_1 = __importDefault(require("../models/VideoForm"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const videos = yield Video_1.default.find({});
+        const videos = yield VideoForm_1.default.find({});
         return res.render("home", { pageTitle: "Home", videos });
     }
     catch (error) {
@@ -36,10 +37,10 @@ exports.getUpload = getUpload;
 const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, hashtags } = req.body;
     try {
-        const videoData = new Video_1.default({
+        const videoData = new VideoForm_1.default({
             title,
             description,
-            hashtags: hashtags.split(",").map((tag) => `#${tag}`),
+            hashtags: HashForm_1.hashForm(hashtags),
         });
         yield videoData.save();
     }
@@ -54,7 +55,7 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.postUpload = postUpload;
 const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const selectedVideo = yield Video_1.default.findById(id).exec();
+    const selectedVideo = yield VideoForm_1.default.findById(id).exec();
     if (selectedVideo === null) {
         return res.render("404", { pageTitle: "Not Found" });
     }
@@ -68,7 +69,7 @@ const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.watch = watch;
 const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const selectedVideo = yield Video_1.default.findById(id).exec();
+    const selectedVideo = yield VideoForm_1.default.findById(id).exec();
     if (selectedVideo === null) {
         return res.render("404", { pageTitle: "Not Found" });
     }
@@ -81,18 +82,22 @@ exports.getEdit = getEdit;
 const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { title, description, hashtags } = req.body;
-    const selectedVideo = yield Video_1.default.exists({ _id: id });
+    const selectedVideo = yield VideoForm_1.default.exists({ _id: id });
     if (selectedVideo === false) {
         return res.render("404", { pageTitle: "Not Found" });
     }
-    yield Video_1.default.findByIdAndUpdate(id, {
+    yield VideoForm_1.default.findByIdAndUpdate(id, {
         title,
         description,
-        hashtags: hashtags
-            .split(",")
-            .map((tag) => (tag.startsWith("#") ? tag : `#${tag}`)),
+        hashtags: HashForm_1.hashForm(hashtags),
     });
     return res.redirect(`/video/${id}`);
 });
 exports.postEdit = postEdit;
+const deleteVideo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    yield VideoForm_1.default.findByIdAndDelete(id);
+    return res.redirect("/");
+});
+exports.deleteVideo = deleteVideo;
 //# sourceMappingURL=videoController.js.map

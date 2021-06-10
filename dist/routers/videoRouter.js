@@ -12,5 +12,6 @@ videoRouter
     .route("/:id([0-9a-f]{24})/edit")
     .get(videoController_1.getEdit)
     .post(videoController_1.postEdit);
+videoRouter.route("/:id([0-9a-f]{24})/delete").get(videoController_1.deleteVideo);
 exports.default = videoRouter;
 //# sourceMappingURL=videoRouter.js.map

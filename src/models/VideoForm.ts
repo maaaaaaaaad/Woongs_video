@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
 
+export type Hashs = [{ type: string }] | null;
+
 type VideoForm = {
   title: string;
   description: string;
   createdAt: Date;
-  hashtags?: [{ type: string }] | null;
+  hashtags?: Hashs;
   metaDB: {
     views: number;
     rating: number;

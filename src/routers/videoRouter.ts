@@ -5,6 +5,7 @@ import {
   getUpload,
   postUpload,
   postEdit,
+  deleteVideo,
 } from "../controllers/videoController";
 
 const videoRouter: Router = express.Router();
@@ -15,5 +16,6 @@ videoRouter
   .route<string>("/:id([0-9a-f]{24})/edit")
   .get(getEdit)
   .post(postEdit);
+videoRouter.route<string>("/:id([0-9a-f]{24})/delete").get(deleteVideo);
 
 export default videoRouter;

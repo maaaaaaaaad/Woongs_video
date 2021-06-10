@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
-import VideoModel from "../models/Video";
+import { hashForm } from "../models/HashForm";
+import VideoModel from "../models/VideoForm";
+
+type ReqBodyItems = {
+  title: string;
+  description: string;
+  hashtags: any;
+};
 
 export const home = async (req: Request, res: Response) => {
   try {
@@ -20,12 +27,12 @@ export const getUpload = (req: Request, res: Response) => {
 };
 
 export const postUpload = async (req: Request, res: Response) => {
-  const { title, description, hashtags } = req.body;
+  const { title, description, hashtags }: ReqBodyItems = req.body;
   try {
     const videoData = new VideoModel({
       title,
       description,
-      hashtags: hashtags.split(",").map((tag: string) => `#${tag}`),
+      hashtags: hashForm(hashtags),
     });
     await videoData.save();
   } catch (error) {
@@ -66,7 +73,7 @@ export const getEdit = async (req: Request, res: Response) => {
 
 export const postEdit = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, description, hashtags } = req.body;
+  const { title, description, hashtags }: ReqBodyItems = req.body;
   const selectedVideo = await VideoModel.exists({ _id: id });
 
   if (selectedVideo === false) {
@@ -75,10 +82,14 @@ export const postEdit = async (req: Request, res: Response) => {
   await VideoModel.findByIdAndUpdate(id, {
     title,
     description,
-    hashtags: hashtags
-      .split(",")
-      .map((tag: string) => (tag.startsWith("#") ? tag : `#${tag}`)),
+    hashtags: hashForm(hashtags),
   });
 
   return res.redirect(`/video/${id}`);
+};
+
+export const deleteVideo = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  await VideoModel.findByIdAndDelete(id);
+  return res.redirect("/");
 };
