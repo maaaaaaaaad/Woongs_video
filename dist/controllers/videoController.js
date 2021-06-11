@@ -26,10 +26,14 @@ const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.home = home;
-const search = (req, res) => {
+const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { keyword } = req.query;
-    return res.render("search", { pageTitle: `Search ${keyword}` });
-};
+    let videoFind = [];
+    videoFind = yield VideoForm_1.default.find({
+        title: keyword,
+    });
+    return res.render("search", { pageTitle: `Search ${keyword}`, videoFind });
+});
 exports.search = search;
 const getUpload = (req, res) => {
     return res.render("upload", { pageTitle: `Upload` });

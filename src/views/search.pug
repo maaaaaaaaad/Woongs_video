@@ -1,8 +1,11 @@
 extends base.pug
-
+include mixins/data.pug
 block content
   form(action="", method="GET") 
-    input(type="text", name="keyword", placeholder="Search...", autocomplete="off",
-          required)
-          
+    input(type="text", name="keyword", placeholder="Search...", 
+          autocomplete="off", required)          
     input(type="submit", value="Search")
+  hr
+  div 
+    each video in videoFind
+      +data(video)

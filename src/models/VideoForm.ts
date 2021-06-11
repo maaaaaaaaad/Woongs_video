@@ -2,9 +2,9 @@ import mongoose from "mongoose";
 
 export type Hashs = [{ type: string }] | null;
 
-type VideoForm = {
+export type VideoForm = {
   title: string;
-  description: string;
+  description?: string;
   createdAt: Date;
   hashtags?: Hashs;
   metaDB: {

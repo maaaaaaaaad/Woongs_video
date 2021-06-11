@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-
 import { hashForm } from "../models/HashForm";
-import VideoModel from "../models/VideoForm";
+import VideoModel, { VideoForm } from "../models/VideoForm";
 
 type ReqBodyItems = {
   title: string;
@@ -19,9 +18,13 @@ export const home = async (req: Request, res: Response) => {
   }
 };
 
-export const search = (req: Request, res: Response) => {
-  const { keyword } = req.query;
-  return res.render("search", { pageTitle: `Search ${keyword}` });
+export const search = async (req: Request, res: Response) => {
+  const { keyword }: { keyword: string } = req.query;
+  let videoFind: VideoForm[] = [];
+  videoFind = await VideoModel.find({
+    title: keyword,
+  });
+  return res.render("search", { pageTitle: `Search ${keyword}`, videoFind });
 };
 
 export const getUpload = (req: Request, res: Response) => {
