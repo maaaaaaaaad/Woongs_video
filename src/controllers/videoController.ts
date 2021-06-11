@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+
 import { hashForm } from "../models/HashForm";
 import VideoModel from "../models/VideoForm";
 
@@ -10,7 +11,7 @@ type ReqBodyItems = {
 
 export const home = async (req: Request, res: Response) => {
   try {
-    const videos = await VideoModel.find({});
+    const videos = await VideoModel.find({}).sort({ createdAt: "desc" });
     return res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     console.log("Error", error);
@@ -19,7 +20,8 @@ export const home = async (req: Request, res: Response) => {
 };
 
 export const search = (req: Request, res: Response) => {
-  return res.send("login");
+  const { keyword } = req.query;
+  return res.render("search", { pageTitle: `Search ${keyword}` });
 };
 
 export const getUpload = (req: Request, res: Response) => {

@@ -17,7 +17,7 @@ const HashForm_1 = require("../models/HashForm");
 const VideoForm_1 = __importDefault(require("../models/VideoForm"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const videos = yield VideoForm_1.default.find({});
+        const videos = yield VideoForm_1.default.find({}).sort({ createdAt: "desc" });
         return res.render("home", { pageTitle: "Home", videos });
     }
     catch (error) {
@@ -27,7 +27,8 @@ const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.home = home;
 const search = (req, res) => {
-    return res.send("login");
+    const { keyword } = req.query;
+    return res.render("search", { pageTitle: `Search ${keyword}` });
 };
 exports.search = search;
 const getUpload = (req, res) => {
