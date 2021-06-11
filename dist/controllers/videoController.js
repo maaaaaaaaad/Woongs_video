@@ -30,7 +30,9 @@ const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { keyword } = req.query;
     let videoFind = [];
     videoFind = yield VideoForm_1.default.find({
-        title: keyword,
+        title: {
+            $regex: new RegExp(`${keyword}`, "i"),
+        },
     });
     return res.render("search", { pageTitle: `Search ${keyword}`, videoFind });
 });

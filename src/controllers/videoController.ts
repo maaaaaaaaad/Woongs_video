@@ -22,7 +22,9 @@ export const search = async (req: Request, res: Response) => {
   const { keyword }: { keyword: string } = req.query;
   let videoFind: VideoForm[] = [];
   videoFind = await VideoModel.find({
-    title: keyword,
+    title: {
+      $regex: new RegExp(`${keyword}`, "i"),
+    },
   });
   return res.render("search", { pageTitle: `Search ${keyword}`, videoFind });
 };
