@@ -3,6 +3,7 @@ import mongoose, { Error } from "mongoose";
 type MongooseOption = {
   useNewUrlParser: boolean;
   useUnifiedTopology: boolean;
+  useCreateIndex: boolean;
 };
 
 const url: string = `mongodb://127.0.0.1:27017/WV`;
@@ -10,6 +11,7 @@ const url: string = `mongodb://127.0.0.1:27017/WV`;
 const options: MongooseOption = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 };
 
 mongoose.connect(url, options);

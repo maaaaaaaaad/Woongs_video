@@ -8,7 +8,7 @@ const userController_1 = require("../controllers/userController");
 const videoController_1 = require("../controllers/videoController");
 const globalRouter = express_1.default.Router();
 globalRouter.get("/", videoController_1.home);
-globalRouter.get("/join", userController_1.join);
+globalRouter.route("/join").get(userController_1.getJoin).post(userController_1.postJoin);
 globalRouter.get("/login", userController_1.login);
 globalRouter.get("/search", videoController_1.search);
 exports.default = globalRouter;

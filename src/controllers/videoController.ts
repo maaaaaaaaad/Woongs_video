@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { hashForm } from "../models/HashForm";
 import VideoModel, { VideoForm } from "../models/VideoForm";
 
-type ReqBodyItems = {
+type PostReqElements = {
   title: string;
   description: string;
   hashtags: any;
@@ -34,7 +34,7 @@ export const getUpload = (req: Request, res: Response) => {
 };
 
 export const postUpload = async (req: Request, res: Response) => {
-  const { title, description, hashtags }: ReqBodyItems = req.body;
+  const { title, description, hashtags }: PostReqElements = req.body;
   try {
     const videoData = new VideoModel({
       title,
@@ -80,7 +80,7 @@ export const getEdit = async (req: Request, res: Response) => {
 
 export const postEdit = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { title, description, hashtags }: ReqBodyItems = req.body;
+  const { title, description, hashtags }: PostReqElements = req.body;
   const selectedVideo = await VideoModel.exists({ _id: id });
 
   if (selectedVideo === false) {

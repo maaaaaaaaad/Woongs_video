@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-type UserForm = {
+export type UserForm = {
   email: string;
   password: string;
   userName: string;
   nickName: string;
-  location?: string;
+  location: string;
 };
 
 const userSchema = new mongoose.Schema<UserForm>({
@@ -15,5 +15,5 @@ const userSchema = new mongoose.Schema<UserForm>({
   nickName: { type: String, required: true, unique: true },
   location: { type: String, required: true },
 });
-const user = mongoose.model("user", userSchema);
-export default user;
+const User = mongoose.model("User", userSchema);
+export default User;
