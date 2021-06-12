@@ -15,5 +15,5 @@ const userSchema = new mongoose.Schema<UserForm>({
   nickName: { type: String, required: true, unique: true },
   location: { type: String, required: true },
 });
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<UserForm>("User", userSchema);
 export default User;
