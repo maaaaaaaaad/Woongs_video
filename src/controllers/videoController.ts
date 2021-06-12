@@ -19,7 +19,7 @@ export const home = async (req: Request, res: Response) => {
 };
 
 export const search = async (req: Request, res: Response) => {
-  const { keyword }: { keyword: string } = req.query;
+  const { keyword } = req.query;
   let videoFind: VideoForm[] = [];
   videoFind = await VideoModel.find({
     title: {
