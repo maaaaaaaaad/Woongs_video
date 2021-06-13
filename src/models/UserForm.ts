@@ -3,8 +3,9 @@ import bcrypt from "bcrypt";
 
 export type UserForm = {
   email: string;
-  password: string;
   userName: string;
+  password: string;
+  password2: string;
   nickName: string;
   location: string;
 };
