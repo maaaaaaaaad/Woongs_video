@@ -19,14 +19,14 @@ exports.getJoin = getJoin;
 const postJoin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, password2, userName, nickName, location } = req.body;
     if (password !== password2) {
-        return res.render("join", {
+        return res.status(400).render("join", {
             pageTitle: "Join",
             errorMessage: "Password does not match",
         });
     }
     const userNameExists = yield UserForm_1.default.exists({ $or: [{ email }, { userName }] });
     if (userNameExists) {
-        return res.render("join", {
+        return res.status(400).render("join", {
             pageTitle: "Join",
             errorMessage: "This user name or email address is already taken.",
         });

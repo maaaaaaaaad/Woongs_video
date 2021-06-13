@@ -52,7 +52,7 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         yield videoData.save();
     }
     catch (error) {
-        return res.render("upload", {
+        return res.status(400).render("upload", {
             pageTitle: `Upload`,
             errorMessage: `Error! ${error._message}`,
         });
@@ -64,7 +64,7 @@ const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const selectedVideo = yield VideoForm_1.default.findById(id).exec();
     if (selectedVideo === null) {
-        return res.render("404", { pageTitle: "Not Found" });
+        return res.status(404).render("404", { pageTitle: "Not Found" });
     }
     else {
         return res.render("watch", {
@@ -78,7 +78,7 @@ const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const selectedVideo = yield VideoForm_1.default.findById(id).exec();
     if (selectedVideo === null) {
-        return res.render("404", { pageTitle: "Not Found" });
+        return res.status(404).render("404", { pageTitle: "Not Found" });
     }
     return res.render("edit", {
         pageTitle: `Edit ${selectedVideo.title}`,
@@ -91,7 +91,7 @@ const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, description, hashtags } = req.body;
     const selectedVideo = yield VideoForm_1.default.exists({ _id: id });
     if (selectedVideo === false) {
-        return res.render("404", { pageTitle: "Not Found" });
+        return res.status(400).render("404", { pageTitle: "Not Found" });
     }
     yield VideoForm_1.default.findByIdAndUpdate(id, {
         title,

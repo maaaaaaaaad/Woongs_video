@@ -43,7 +43,7 @@ export const postUpload = async (req: Request, res: Response) => {
     });
     await videoData.save();
   } catch (error) {
-    return res.render("upload", {
+    return res.status(400).render("upload", {
       pageTitle: `Upload`,
       errorMessage: `Error! ${error._message}`,
     });
@@ -57,7 +57,7 @@ export const watch = async (req: Request, res: Response) => {
   const selectedVideo = await VideoModel.findById(id).exec();
 
   if (selectedVideo === null) {
-    return res.render("404", { pageTitle: "Not Found" });
+    return res.status(404).render("404", { pageTitle: "Not Found" });
   } else {
     return res.render("watch", {
       pageTitle: `${selectedVideo.title}`,
@@ -70,7 +70,7 @@ export const getEdit = async (req: Request, res: Response) => {
   const { id } = req.params;
   const selectedVideo = await VideoModel.findById(id).exec();
   if (selectedVideo === null) {
-    return res.render("404", { pageTitle: "Not Found" });
+    return res.status(404).render("404", { pageTitle: "Not Found" });
   }
   return res.render("edit", {
     pageTitle: `Edit ${selectedVideo.title}`,
@@ -84,7 +84,7 @@ export const postEdit = async (req: Request, res: Response) => {
   const selectedVideo = await VideoModel.exists({ _id: id });
 
   if (selectedVideo === false) {
-    return res.render("404", { pageTitle: "Not Found" });
+    return res.status(400).render("404", { pageTitle: "Not Found" });
   }
   await VideoModel.findByIdAndUpdate(id, {
     title,
