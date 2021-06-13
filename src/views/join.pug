@@ -2,7 +2,7 @@ extends base.pug
 
 block content
   if errorMessage
-      span=errorMessage
+      h3=errorMessage
   form(method="POST") 
     input(type="email" name="email" placeholder="email" requierd, 
           autocomplete="off")
@@ -16,4 +16,10 @@ block content
           autocomplete="off")
     input(type="text" name="location" placeholder="location" requierd, 
           autocomplete="off")
-    input(type="submit", value="Join")
+    input(type="submit", value="Create Account")
+  
+  hr 
+  div 
+    span Already have an Account  
+    a(href="/login") Log in now &rarr;
+    

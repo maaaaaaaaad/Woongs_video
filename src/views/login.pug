@@ -1,0 +1,17 @@
+extends base.pug
+
+block content
+  if errorMessage
+      h3=errorMessage
+  form(method="POST")
+    input(type="text" name="userName" placeholder="userName" requierd, 
+          autocomplete="off")
+    input(type="password" name="password" placeholder="password" requierd, 
+          autocomplete="off")
+    input(type="submit", value="SIGN IN")
+  
+  hr 
+  div 
+    span Don't have an Account?  
+    a(href="/join") Create an Account &rarr;
+    

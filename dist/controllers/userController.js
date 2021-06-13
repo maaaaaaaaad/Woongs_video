@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.logout = exports.login = exports.remove = exports.edit = exports.postJoin = exports.getJoin = void 0;
+exports.watch = exports.logout = exports.remove = exports.edit = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const UserForm_1 = __importDefault(require("../models/UserForm"));
 const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.getJoin = getJoin;
@@ -24,24 +24,52 @@ const postJoin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             errorMessage: "Password does not match",
         });
     }
-    const userNameExists = yield UserForm_1.default.exists({ $or: [{ email }, { userName }] });
+    const userNameExists = yield UserForm_1.default.exists({
+        $or: [{ email }, { userName }],
+    });
     if (userNameExists) {
         return res.status(400).render("join", {
             pageTitle: "Join",
             errorMessage: "This user name or email address is already taken.",
         });
     }
-    const createUserData = new UserForm_1.default({
-        email,
-        password,
-        userName,
-        nickName,
-        location,
-    });
-    yield createUserData.save();
-    return res.redirect("/login");
+    try {
+        const createUserData = new UserForm_1.default({
+            email,
+            password,
+            userName,
+            nickName,
+            location,
+        });
+        yield createUserData.save();
+        return res.redirect("/login");
+    }
+    catch (error) {
+        return res.status(400).render("join", {
+            pageTitle: `Join`,
+            errorMessage: `Error! ${error._message}`,
+        });
+    }
 });
 exports.postJoin = postJoin;
+const getLogin = (req, res) => {
+    return res.render("login", { pageTitle: "SIGN IN" });
+};
+exports.getLogin = getLogin;
+const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userName, password } = req.body;
+    const exists = yield UserForm_1.default.exists({ userName });
+    if (!exists) {
+        return res
+            .status(400)
+            .render("login", {
+            pageTitle: "SIGN IN",
+            errorMessage: "Not found an Account",
+        });
+    }
+    return res.end();
+});
+exports.postLogin = postLogin;
 const edit = (req, res) => {
     return res.send("Edit Profile");
 };
@@ -50,10 +78,6 @@ const remove = (req, res) => {
     return res.send("delete");
 };
 exports.remove = remove;
-const login = (req, res) => {
-    return res.send("login");
-};
-exports.login = login;
 const logout = (req, res) => {
     return res.send("logout");
 };
