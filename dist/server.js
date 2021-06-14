@@ -17,9 +17,15 @@ app.use(logger);
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_session_1.default({
     secret: "Hello",
-    resave: true,
+    resave: false,
     saveUninitialized: true,
 }));
+app.use((req, res, next) => {
+    req.sessionStore.all((error, sessions) => {
+        console.log(sessions);
+        next();
+    });
+});
 app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);
 app.use("/video", videoRouter_1.default);

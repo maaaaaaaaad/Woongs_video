@@ -68,7 +68,8 @@ export const postLogin = async (req: Request, res: Response) => {
       errorMessage: "No password",
     });
   }
-  console.log(`Login user name: ${userName}`);
+  req.session.loggedIn = true;
+  req.session.user = userExists;
   return res.redirect("/");
 };
 

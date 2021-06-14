@@ -73,7 +73,8 @@ const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             errorMessage: "No password",
         });
     }
-    console.log(`Login user name: ${userName}`);
+    req.session.loggedIn = true;
+    req.session.user = userExists;
     return res.redirect("/");
 });
 exports.postLogin = postLogin;
