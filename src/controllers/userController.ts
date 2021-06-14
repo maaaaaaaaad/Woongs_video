@@ -1,5 +1,8 @@
+import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
+
+type CheckNameAndPassword = { userName: string; password: string };
 
 export const getJoin = (req: Request, res: Response) =>
   res.render("join", { pageTitle: "Join" });
@@ -48,19 +51,25 @@ export const getLogin = (req: Request, res: Response) => {
 };
 
 export const postLogin = async (req: Request, res: Response) => {
-  const { userName, password }: { userName: string; password: string } =
-    req.body;
+  const { userName, password }: CheckNameAndPassword = req.body;
 
-  const exists: boolean = await User.exists({ userName });
-  if (!exists) {
-    return res
-      .status(400)
-      .render("login", {
-        pageTitle: "SIGN IN",
-        errorMessage: "Not found an Account",
-      });
+  const userExists = await User.findOne({ userName });
+  if (!userExists) {
+    return res.status(400).render("login", {
+      pageTitle: "SIGN IN",
+      errorMessage: "Not found an Account",
+    });
   }
-  return res.end();
+
+  const checkingPassword = await bcrypt.compare(password, userExists.password);
+  if (!checkingPassword) {
+    return res.status(400).render("login", {
+      pageTitle: "SIGN IN",
+      errorMessage: "No password",
+    });
+  }
+  console.log(`Login user name: ${userName}`);
+  return res.redirect("/");
 };
 
 export const edit = (req: Request, res: Response) => {

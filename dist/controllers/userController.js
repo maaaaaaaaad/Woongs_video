@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.watch = exports.logout = exports.remove = exports.edit = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
 const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.getJoin = getJoin;
@@ -58,16 +59,22 @@ const getLogin = (req, res) => {
 exports.getLogin = getLogin;
 const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, password } = req.body;
-    const exists = yield UserForm_1.default.exists({ userName });
-    if (!exists) {
-        return res
-            .status(400)
-            .render("login", {
+    const userExists = yield UserForm_1.default.findOne({ userName });
+    if (!userExists) {
+        return res.status(400).render("login", {
             pageTitle: "SIGN IN",
             errorMessage: "Not found an Account",
         });
     }
-    return res.end();
+    const checkingPassword = yield bcrypt_1.default.compare(password, userExists.password);
+    if (!checkingPassword) {
+        return res.status(400).render("login", {
+            pageTitle: "SIGN IN",
+            errorMessage: "No password",
+        });
+    }
+    console.log(`Login user name: ${userName}`);
+    return res.redirect("/");
 });
 exports.postLogin = postLogin;
 const edit = (req, res) => {
