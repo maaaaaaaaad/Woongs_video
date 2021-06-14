@@ -17,9 +17,11 @@
   "homepage": "https://github.com/dongwoongoh/Woongs_video#readme",
   "dependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/express-session": "^1.17.3",
     "@types/mongoose": "^5.11.97",
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongoose": "^5.12.13",
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
