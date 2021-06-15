@@ -21,10 +21,11 @@ app.use(express_session_1.default({
     saveUninitialized: true,
 }));
 app.use((req, res, next) => {
-    req.sessionStore.all((error, sessions) => {
-        console.log(sessions);
-        next();
-    });
+    res.locals.loggedIn = Boolean(req.session.loggedIn);
+    res.locals.siteName = "WV";
+    res.locals.loggedInUser = req.session.user;
+    console.log(res.locals);
+    next();
 });
 app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);

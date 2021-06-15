@@ -1,4 +1,5 @@
 import express from "express";
+import { Request, Response } from "express";
 import session from "express-session";
 import morgan from "morgan";
 import globalRouter from "./routers/globalRouter";
@@ -23,11 +24,12 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  req.sessionStore.all((error, sessions) => {
-    console.log(sessions);
-    next();
-  });
+app.use((req: Request, res: Response, next) => {
+  res.locals.loggedIn = Boolean(req.session.loggedIn);
+  res.locals.siteName = "WV";
+  res.locals.loggedInUser = req.session.user;
+  console.log(res.locals);
+  next();
 });
 
 app.use("/", globalRouter);
