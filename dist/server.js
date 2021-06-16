@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const express_session_1 = __importDefault(require("express-session"));
+const connect_mongo_1 = __importDefault(require("connect-mongo"));
 const morgan_1 = __importDefault(require("morgan"));
 const globalRouter_1 = __importDefault(require("./routers/globalRouter"));
 const userRouter_1 = __importDefault(require("./routers/userRouter"));
@@ -19,6 +20,7 @@ app.use(express_session_1.default({
     secret: "Hello",
     resave: false,
     saveUninitialized: true,
+    store: connect_mongo_1.default.create({ mongoUrl: "mongodb://127.0.0.1:27017/WV" }),
 }));
 app.use((req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
