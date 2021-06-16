@@ -75,6 +75,7 @@ const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     req.session.loggedIn = true;
     req.session.user = userExists;
+    console.log("-----User Controller-----");
     return res.redirect("/");
 });
 exports.postLogin = postLogin;

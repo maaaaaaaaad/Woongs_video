@@ -24,7 +24,7 @@ app.use((req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
     res.locals.siteName = "WV";
     res.locals.loggedInUser = req.session.user;
-    console.log(res.locals);
+    console.log("my locals", res.locals);
     next();
 });
 app.use("/", globalRouter_1.default);
