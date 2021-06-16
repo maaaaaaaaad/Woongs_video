@@ -6,7 +6,7 @@ type MongooseOption = {
   useCreateIndex: boolean;
 };
 
-const url: string = `mongodb://127.0.0.1:27017/WV`;
+const url = process.env.DB_URL! as string;
 
 const options: MongooseOption = {
   useNewUrlParser: true,

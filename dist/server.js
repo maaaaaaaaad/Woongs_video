@@ -17,10 +17,10 @@ const logger = morgan_1.default("dev");
 app.use(logger);
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_session_1.default({
-    secret: "Hello",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: true,
-    store: connect_mongo_1.default.create({ mongoUrl: "mongodb://127.0.0.1:27017/WV" }),
+    saveUninitialized: false,
+    store: connect_mongo_1.default.create({ mongoUrl: process.env.DB_URL }),
 }));
 app.use((req, res, next) => {
     res.locals.loggedIn = Boolean(req.session.loggedIn);
