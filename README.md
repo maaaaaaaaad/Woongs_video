@@ -57,3 +57,51 @@ export const postLogin = async (req: Request, res: Response) => {
   req.session.user = userExists;
   return res.redirect("/");
 ```
+
+## Login continue with Github
+
+```javascript
+export const startGithubLogin = (req: Request, res: Response) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config: any = {
+    client_id: process.env.GITHUB_CLIENT_ID,
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const loginUrl = `${baseUrl}?${params}`;
+  return res.redirect(loginUrl);
+};
+
+export const callbackGithubLogin = async (req: Request, res: Response) => {
+  const baseUrl = "https://github.com/login/oauth/access_token";
+  const config: any = {
+    client_id: process.env.GITHUB_CLIENT_ID,
+    client_secret: process.env.GITHUB_SECRET,
+    code: req.query.code,
+  };
+
+  const params = new URLSearchParams(config).toString();
+  const loginUrl = `${baseUrl}?${params}`;
+  try {
+    const data = await fetch(loginUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const jsonFile: string = await data.json();
+    console.log(jsonFile);
+    res.send(JSON.stringify(jsonFile));
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+```
+
+**Special constructor is new URLSearchParams()**
+
+```javascript
+const params = new URLSearchParams(...).toString();
+```
