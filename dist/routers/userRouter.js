@@ -10,5 +10,7 @@ userRouter.get("/logout", userController_1.logout);
 userRouter.get("/edit", userController_1.edit);
 userRouter.get("/delete", userController_1.remove);
 userRouter.get("/:id", userController_1.watch);
+userRouter.get("/github/start", userController_1.startGithubLogin);
+userRouter.get("/github/callbackUrl", userController_1.callbackGithubLogin);
 exports.default = userRouter;
 //# sourceMappingURL=userRouter.js.map

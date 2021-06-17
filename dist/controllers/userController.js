@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.logout = exports.remove = exports.edit = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+exports.watch = exports.logout = exports.remove = exports.edit = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
 const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.getJoin = getJoin;
@@ -75,10 +76,46 @@ const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     req.session.loggedIn = true;
     req.session.user = userExists;
-    console.log("-----User Controller-----");
     return res.redirect("/");
 });
 exports.postLogin = postLogin;
+const startGithubLogin = (req, res) => {
+    const baseUrl = "https://github.com/login/oauth/authorize";
+    const config = {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        allow_signup: false,
+        scope: "read:user user:email",
+    };
+    const params = new URLSearchParams(config).toString();
+    const loginUrl = `${baseUrl}?${params}`;
+    return res.redirect(loginUrl);
+};
+exports.startGithubLogin = startGithubLogin;
+const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const baseUrl = "https://github.com/login/oauth/access_token";
+    const config = {
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_SECRET,
+        code: req.query.code,
+    };
+    const params = new URLSearchParams(config).toString();
+    const loginUrl = `${baseUrl}?${params}`;
+    try {
+        const data = yield node_fetch_1.default(loginUrl, {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+            },
+        });
+        const jsonFile = yield data.json();
+        console.log(jsonFile);
+        res.send(JSON.stringify(jsonFile));
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+});
+exports.callbackGithubLogin = callbackGithubLogin;
 const edit = (req, res) => {
     return res.send("Edit Profile");
 };
