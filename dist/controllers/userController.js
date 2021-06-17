@@ -114,7 +114,16 @@ const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, func
                     Authorization: `token ${access_token}`,
                 },
             })).json();
-            return res.send(userReq);
+            const emailReq = yield (yield node_fetch_1.default("https://api.github.com/user/emails", {
+                headers: {
+                    Authorization: `token ${access_token}`,
+                },
+            })).json();
+            const email = emailReq.find((emailItems) => emailItems.primary === true && emailItems.verified === true);
+            if (!email) {
+                return res.redirect("/login");
+            }
+            console.log(email);
         }
         else {
             return res.redirect("/login");

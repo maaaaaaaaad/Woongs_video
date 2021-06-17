@@ -108,3 +108,29 @@ export const callbackGithubLogin /*🌟 Important*/ = async (
 ```javascript
 const params = new URLSearchParams(...).toString();
 ```
+
+## 5.User email scope
+
+1. Create a new type
+2. Using fetch url as get a token from github api
+3. Inspect email primary and verified how a find method in array prototype
+
+```javascript
+type EmailReq = {
+  email: string,
+  primary: boolean,
+  verified: boolean,
+  visibility: string | null,
+};
+
+const emailReq: Array<EmailReq> = await (
+  await fetch("https://api.github.com/user/emails", {
+    headers: {
+      Authorization: `token ${access_token}`,
+    },
+  })
+).json();
+const email = emailReq.find(
+  (emailItems) => emailItems.primary === true && emailItems.verified === true
+);
+```

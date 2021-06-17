@@ -4,6 +4,12 @@ import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
 
 type CheckNameAndPassword = { userName: string; password: string };
+type EmailReq = {
+  email: string;
+  primary: boolean;
+  verified: boolean;
+  visibility: string | null;
+};
 
 export const getJoin = (req: Request, res: Response) =>
   res.render("join", { pageTitle: "Join" });
@@ -115,7 +121,21 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
           },
         })
       ).json();
-      return res.send(userReq);
+      const emailReq: Array<EmailReq> = await (
+        await fetch("https://api.github.com/user/emails", {
+          headers: {
+            Authorization: `token ${access_token}`,
+          },
+        })
+      ).json();
+      const email = emailReq.find(
+        (emailItems) =>
+          emailItems.primary === true && emailItems.verified === true
+      );
+      if (!email) {
+        return res.redirect("/login");
+      }
+      console.log(email);
     } else {
       return res.redirect("/login");
     }
