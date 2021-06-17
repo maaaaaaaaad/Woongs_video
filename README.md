@@ -58,7 +58,7 @@ export const postLogin = async (req: Request, res: Response) => {
   return res.redirect("/");
 ```
 
-## Login continue with Github
+## 4.Login continue with Github
 
 ```javascript
 export const startGithubLogin = (req: Request, res: Response) => {
@@ -73,7 +73,10 @@ export const startGithubLogin = (req: Request, res: Response) => {
   return res.redirect(loginUrl);
 };
 
-export const callbackGithubLogin = async (req: Request, res: Response) => {
+export const callbackGithubLogin /*🌟 Important*/ = async (
+  req: Request,
+  res: Response
+) => {
   const baseUrl = "https://github.com/login/oauth/access_token";
   const config: any = {
     client_id: process.env.GITHUB_CLIENT_ID,

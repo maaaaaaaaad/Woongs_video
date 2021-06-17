@@ -101,15 +101,24 @@ const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, func
     const params = new URLSearchParams(config).toString();
     const loginUrl = `${baseUrl}?${params}`;
     try {
-        const data = yield node_fetch_1.default(loginUrl, {
+        const tokenReq = yield (yield node_fetch_1.default(loginUrl, {
             method: "POST",
             headers: {
                 Accept: "application/json",
             },
-        });
-        const jsonFile = yield data.json();
-        console.log(jsonFile);
-        res.send(JSON.stringify(jsonFile));
+        })).json();
+        if ("access_token" in tokenReq) {
+            const { access_token } = tokenReq;
+            const userReq = yield (yield node_fetch_1.default("https://api.github.com/user", {
+                headers: {
+                    Authorization: `token ${access_token}`,
+                },
+            })).json();
+            return res.send(userReq);
+        }
+        else {
+            return res.redirect("/login");
+        }
     }
     catch (error) {
         console.log(error.message);

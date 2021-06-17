@@ -97,16 +97,28 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
   const params = new URLSearchParams(config).toString();
   const loginUrl = `${baseUrl}?${params}`;
   try {
-    const data = await fetch(loginUrl, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    const tokenReq = await (
+      await fetch(loginUrl, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+      })
+    ).json();
 
-    const jsonFile: string = await data.json();
-    console.log(jsonFile);
-    res.send(JSON.stringify(jsonFile));
+    if ("access_token" in tokenReq) {
+      const { access_token } = tokenReq;
+      const userReq = await (
+        await fetch("https://api.github.com/user", {
+          headers: {
+            Authorization: `token ${access_token}`,
+          },
+        })
+      ).json();
+      return res.send(userReq);
+    } else {
+      return res.redirect("/login");
+    }
   } catch (error) {
     console.log(error.message);
   }
