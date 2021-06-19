@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.logout = exports.remove = exports.edit = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+exports.watch = exports.remove = exports.edit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
@@ -60,7 +60,7 @@ const getLogin = (req, res) => {
 exports.getLogin = getLogin;
 const postLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, password } = req.body;
-    const userExists = yield UserForm_1.default.findOne({ userName });
+    const userExists = yield UserForm_1.default.findOne({ userName, socialCheck: false });
     if (!userExists) {
         return res.status(400).render("login", {
             pageTitle: "SIGN IN",
@@ -123,24 +123,20 @@ const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, func
             if (!emailObject) {
                 return res.redirect("/login");
             }
-            const existsUserEmail = yield UserForm_1.default.findOne({ email: emailObject.email });
-            if (existsUserEmail) {
-                req.session.loggedIn = true;
-                req.session.user = existsUserEmail;
-                return res.redirect("/");
-            }
-            else {
-                const createSocialLogin = new UserForm_1.default({
+            let existsUserEmail = yield UserForm_1.default.findOne({ email: emailObject.email });
+            if (!existsUserEmail) {
+                existsUserEmail = yield UserForm_1.default.create({
                     email: emailObject.email,
                     password: "",
                     userName: userReq.name ? userReq.name : "Unknown",
                     nickName: userReq.login ? userReq.login : "Unknown",
                     location: userReq.location,
                     socialCheck: true,
+                    avatarUrl: userReq.avatar_url,
                 });
-                yield createSocialLogin.save();
                 req.session.loggedIn = true;
-                req.session.user = createSocialLogin;
+                req.session.user = existsUserEmail;
+                console.log(existsUserEmail);
                 return res.redirect("/");
             }
         }
@@ -153,6 +149,18 @@ const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.callbackGithubLogin = callbackGithubLogin;
+const logout = (req, res) => {
+    req.session.destroy(function (err) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.clearCookie("connect.sid");
+            res.redirect("/");
+        }
+    });
+};
+exports.logout = logout;
 const edit = (req, res) => {
     return res.send("Edit Profile");
 };
@@ -161,10 +169,6 @@ const remove = (req, res) => {
     return res.send("delete");
 };
 exports.remove = remove;
-const logout = (req, res) => {
-    return res.send("logout");
-};
-exports.logout = logout;
 const watch = (req, res) => {
     return res.send("wat");
 };

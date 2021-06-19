@@ -9,6 +9,7 @@ type UserReqData = {
   name: string;
   login: string;
   location: string;
+  avatar_url: string;
 };
 
 type EmailReq = {
@@ -67,7 +68,7 @@ export const getLogin = (req: Request, res: Response) => {
 export const postLogin = async (req: Request, res: Response) => {
   const { userName, password }: CheckNameAndPassword = req.body;
 
-  const userExists = await User.findOne({ userName });
+  const userExists = await User.findOne({ userName, socialCheck: false });
   if (!userExists) {
     return res.status(400).render("login", {
       pageTitle: "SIGN IN",
@@ -106,9 +107,9 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
     client_secret: process.env.GITHUB_SECRET,
     code: req.query.code,
   };
-
   const params = new URLSearchParams(config).toString();
   const loginUrl = `${baseUrl}?${params}`;
+
   try {
     const tokenReq = await (
       await fetch(loginUrl, {
@@ -142,23 +143,21 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
       if (!emailObject) {
         return res.redirect("/login");
       }
-      const existsUserEmail = await User.findOne({ email: emailObject.email });
-      if (existsUserEmail) {
-        req.session.loggedIn = true;
-        req.session.user = existsUserEmail;
-        return res.redirect("/");
-      } else {
-        const createSocialLogin = new User({
+      let existsUserEmail = await User.findOne({ email: emailObject.email });
+      if (!existsUserEmail) {
+        existsUserEmail = await User.create({
           email: emailObject.email,
           password: "",
           userName: userReq.name ? userReq.name : "Unknown",
           nickName: userReq.login ? userReq.login : "Unknown",
           location: userReq.location,
           socialCheck: true,
+          avatarUrl: userReq.avatar_url,
         });
-        await createSocialLogin.save();
+
         req.session.loggedIn = true;
-        req.session.user = createSocialLogin;
+        req.session.user = existsUserEmail;
+        console.log(existsUserEmail);
         return res.redirect("/");
       }
     } else {
@@ -169,16 +168,23 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
   }
 };
 
+export const logout = (req: Request, res: Response) => {
+  req.session.destroy(function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.clearCookie("connect.sid");
+      res.redirect("/");
+    }
+  });
+};
+
 export const edit = (req: Request, res: Response) => {
   return res.send("Edit Profile");
 };
 
 export const remove = (req: Request, res: Response) => {
   return res.send("delete");
-};
-
-export const logout = (req: Request, res: Response) => {
-  return res.send("logout");
 };
 
 export const watch = (req: Request, res: Response) => {

@@ -9,6 +9,7 @@ export type UserForm = {
   nickName: string;
   location: string;
   socialCheck?: boolean;
+  avatarUrl: string;
 };
 
 const userSchema = new mongoose.Schema<UserForm>({
@@ -18,6 +19,7 @@ const userSchema = new mongoose.Schema<UserForm>({
   nickName: { type: String, required: true, unique: true },
   location: { type: String, required: true },
   socialCheck: { type: Boolean, default: false },
+  avatarUrl: { type: String },
 });
 
 userSchema.pre("save", async function () {
