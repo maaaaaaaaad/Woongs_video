@@ -8,14 +8,16 @@ export type UserForm = {
   password2: string;
   nickName: string;
   location: string;
+  socialCheck?: boolean;
 };
 
 const userSchema = new mongoose.Schema<UserForm>({
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
+  password: { type: String },
   userName: { type: String, required: true, unique: true },
   nickName: { type: String, required: true, unique: true },
   location: { type: String, required: true },
+  socialCheck: { type: Boolean, default: false },
 });
 
 userSchema.pre("save", async function () {

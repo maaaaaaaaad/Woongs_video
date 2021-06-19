@@ -4,6 +4,13 @@ import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
 
 type CheckNameAndPassword = { userName: string; password: string };
+
+type UserReqData = {
+  name: string;
+  login: string;
+  location: string;
+};
+
 type EmailReq = {
   email: string;
   primary: boolean;
@@ -114,7 +121,7 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
 
     if ("access_token" in tokenReq) {
       const { access_token } = tokenReq;
-      const userReq = await (
+      const userReq: UserReqData = await (
         await fetch("https://api.github.com/user", {
           headers: {
             Authorization: `token ${access_token}`,
@@ -128,14 +135,32 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
           },
         })
       ).json();
-      const email = emailReq.find(
+      const emailObject = emailReq.find(
         (emailItems) =>
           emailItems.primary === true && emailItems.verified === true
       );
-      if (!email) {
+      if (!emailObject) {
         return res.redirect("/login");
       }
-      console.log(email);
+      const existsUserEmail = await User.findOne({ email: emailObject.email });
+      if (existsUserEmail) {
+        req.session.loggedIn = true;
+        req.session.user = existsUserEmail;
+        return res.redirect("/");
+      } else {
+        const createSocialLogin = new User({
+          email: emailObject.email,
+          password: "",
+          userName: userReq.name ? userReq.name : "Unknown",
+          nickName: userReq.login ? userReq.login : "Unknown",
+          location: userReq.location,
+          socialCheck: true,
+        });
+        await createSocialLogin.save();
+        req.session.loggedIn = true;
+        req.session.user = createSocialLogin;
+        return res.redirect("/");
+      }
     } else {
       return res.redirect("/login");
     }

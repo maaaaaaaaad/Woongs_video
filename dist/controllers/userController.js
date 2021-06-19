@@ -119,11 +119,30 @@ const callbackGithubLogin = (req, res) => __awaiter(void 0, void 0, void 0, func
                     Authorization: `token ${access_token}`,
                 },
             })).json();
-            const email = emailReq.find((emailItems) => emailItems.primary === true && emailItems.verified === true);
-            if (!email) {
+            const emailObject = emailReq.find((emailItems) => emailItems.primary === true && emailItems.verified === true);
+            if (!emailObject) {
                 return res.redirect("/login");
             }
-            console.log(email);
+            const existsUserEmail = yield UserForm_1.default.findOne({ email: emailObject.email });
+            if (existsUserEmail) {
+                req.session.loggedIn = true;
+                req.session.user = existsUserEmail;
+                return res.redirect("/");
+            }
+            else {
+                const createSocialLogin = new UserForm_1.default({
+                    email: emailObject.email,
+                    password: "",
+                    userName: userReq.name ? userReq.name : "Unknown",
+                    nickName: userReq.login ? userReq.login : "Unknown",
+                    location: userReq.location,
+                    socialCheck: true,
+                });
+                yield createSocialLogin.save();
+                req.session.loggedIn = true;
+                req.session.user = createSocialLogin;
+                return res.redirect("/");
+            }
         }
         else {
             return res.redirect("/login");
