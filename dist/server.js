@@ -10,6 +10,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const globalRouter_1 = __importDefault(require("./routers/globalRouter"));
 const userRouter_1 = __importDefault(require("./routers/userRouter"));
 const videoRouter_1 = __importDefault(require("./routers/videoRouter"));
+const middlewares_1 = require("./middlewares");
 const app = express_1.default();
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
@@ -22,13 +23,7 @@ app.use(express_session_1.default({
     saveUninitialized: false,
     store: connect_mongo_1.default.create({ mongoUrl: process.env.DB_URL }),
 }));
-app.use((req, res, next) => {
-    res.locals.loggedIn = Boolean(req.session.loggedIn);
-    res.locals.siteName = "WV";
-    res.locals.loggedInUser = req.session.user;
-    console.log("my locals", res.locals);
-    next();
-});
+app.use(middlewares_1.localsMiddleware);
 app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);
 app.use("/video", videoRouter_1.default);

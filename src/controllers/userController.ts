@@ -44,14 +44,13 @@ export const postJoin = async (req: Request, res: Response) => {
     });
   }
   try {
-    const createUserData = new User({
+    await User.create({
       email,
       password,
       userName,
       nickName,
       location,
     });
-    await createUserData.save();
     return res.redirect("/login");
   } catch (error) {
     return res.status(400).render("join", {
@@ -179,8 +178,11 @@ export const logout = (req: Request, res: Response) => {
   });
 };
 
-export const edit = (req: Request, res: Response) => {
-  return res.send("Edit Profile");
+export const getEdit = (req: Request, res: Response) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = (req: Request, res: Response) => {
+  return res.render("edit-profile");
 };
 
 export const remove = (req: Request, res: Response) => {

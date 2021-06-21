@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.remove = exports.edit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+exports.watch = exports.remove = exports.postEdit = exports.getEdit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
@@ -36,14 +36,13 @@ const postJoin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     try {
-        const createUserData = new UserForm_1.default({
+        yield UserForm_1.default.create({
             email,
             password,
             userName,
             nickName,
             location,
         });
-        yield createUserData.save();
         return res.redirect("/login");
     }
     catch (error) {
@@ -161,10 +160,14 @@ const logout = (req, res) => {
     });
 };
 exports.logout = logout;
-const edit = (req, res) => {
-    return res.send("Edit Profile");
+const getEdit = (req, res) => {
+    return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-exports.edit = edit;
+exports.getEdit = getEdit;
+const postEdit = (req, res) => {
+    return res.render("edit-profile");
+};
+exports.postEdit = postEdit;
 const remove = (req, res) => {
     return res.send("delete");
 };
