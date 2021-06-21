@@ -134,3 +134,31 @@ const email = emailReq.find(
   (emailItems) => emailItems.primary === true && emailItems.verified === true
 );
 ```
+
+## 6.Route protect or public
+
+```javascript
+export const protectorMiddleware = (
+  req: Request,
+  res: Response,
+  next: () => any
+) => {
+  if (req.session.loggedIn) {
+    return next();
+  } else {
+    return res.redirect("/login");
+  }
+};
+
+export const publicOnlyMiddleware = (
+  req: Request,
+  res: Response,
+  next: () => any
+) => {
+  if (!req.session.loggedIn) {
+    return next();
+  } else {
+    return res.redirect("/");
+  }
+};
+```
