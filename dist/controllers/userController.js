@@ -166,13 +166,15 @@ const getEdit = (req, res) => {
 exports.getEdit = getEdit;
 const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { session: { user: _id }, body: { name, email, username, location }, } = req;
-    yield UserForm_1.default.findByIdAndUpdate(_id, {
+    const updateUser = yield UserForm_1.default.findByIdAndUpdate(_id, {
         userName: name,
         email,
         nickName: username,
         location,
-    });
-    return res.render("edit-profile", { pageTitle: "Edit Profile" });
+    }, { new: true });
+    if (req.session.user)
+        req.session.user = updateUser;
+    return res.redirect("/user/edit");
 });
 exports.postEdit = postEdit;
 const remove = (req, res) => {
