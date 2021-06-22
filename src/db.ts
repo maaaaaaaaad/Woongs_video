@@ -6,6 +6,11 @@ type MongooseOption = {
   useCreateIndex: boolean;
 };
 
+type ConnectionValues = {
+  error: string;
+  open: string;
+};
+
 const url = process.env.DB_URL! as string;
 
 const options: MongooseOption = {
@@ -16,11 +21,6 @@ const options: MongooseOption = {
 
 mongoose.connect(url, options);
 const db = mongoose.connection;
-
-type ConnectionValues = {
-  error: string;
-  open: string;
-};
 
 const message: ConnectionValues = {
   error: "error",

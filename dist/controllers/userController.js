@@ -164,9 +164,16 @@ const getEdit = (req, res) => {
     return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
 exports.getEdit = getEdit;
-const postEdit = (req, res) => {
-    return res.render("edit-profile");
-};
+const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { session: { user: _id }, body: { name, email, username, location }, } = req;
+    yield UserForm_1.default.findByIdAndUpdate(_id, {
+        userName: name,
+        email,
+        nickName: username,
+        location,
+    });
+    return res.render("edit-profile", { pageTitle: "Edit Profile" });
+});
 exports.postEdit = postEdit;
 const remove = (req, res) => {
     return res.send("delete");
