@@ -10,6 +10,7 @@ export type UserForm = {
   location: string;
   socialCheck?: boolean;
   avatarUrl: string;
+  socialOnly: boolean;
 };
 
 const userSchema = new mongoose.Schema<UserForm>({

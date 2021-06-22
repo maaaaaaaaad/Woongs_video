@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.remove = exports.postEdit = exports.getEdit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+exports.watch = exports.remove = exports.postChangePassword = exports.getChangePassword = exports.postEdit = exports.getEdit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
@@ -177,6 +177,34 @@ const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return res.redirect("/user/edit");
 });
 exports.postEdit = postEdit;
+const getChangePassword = (req, res) => {
+    if (req.session.user.socialOnly === true) {
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+exports.getChangePassword = getChangePassword;
+const postChangePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { session: { user: _id }, body: { currentPassword, newPassword, newPasswordConfirmation }, } = req;
+    const user = yield UserForm_1.default.findById(_id);
+    const checkPassword = yield bcrypt_1.default.compare(currentPassword, user.password);
+    if (!checkPassword) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "The current password is incorrect",
+        });
+    }
+    if (newPassword !== newPasswordConfirmation) {
+        return res.status(400).render("users/change-password", {
+            pageTitle: "Change Password",
+            errorMessage: "The password does not match the confirmation",
+        });
+    }
+    user.password = newPassword;
+    yield user.save();
+    return res.redirect("/user/logout");
+});
+exports.postChangePassword = postChangePassword;
 const remove = (req, res) => {
     return res.send("delete");
 };

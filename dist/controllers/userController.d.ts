@@ -8,5 +8,7 @@ export declare const callbackGithubLogin: (req: Request, res: Response) => Promi
 export declare const logout: (req: Request, res: Response) => void;
 export declare const getEdit: (req: Request, res: Response) => void;
 export declare const postEdit: (req: Request, res: Response) => Promise<void>;
+export declare const getChangePassword: (req: Request, res: Response) => void;
+export declare const postChangePassword: (req: Request, res: Response) => Promise<void>;
 export declare const remove: (req: Request, res: Response) => Response<any, Record<string, any>>;
 export declare const watch: (req: Request, res: Response) => Response<any, Record<string, any>>;
