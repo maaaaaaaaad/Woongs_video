@@ -162,3 +162,13 @@ export const publicOnlyMiddleware = (
   }
 };
 ```
+
+## 7.File upload middleware
+
+- In this code excute img viewer in browser.
+- Express static method have folder(file) router.
+- If not find "uploads" base url, excute a "uploads" file.
+
+```javascript
+app.use("/uploads", express.static("uploads"));
+```
