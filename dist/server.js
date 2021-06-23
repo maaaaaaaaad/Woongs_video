@@ -24,6 +24,7 @@ app.use(express_session_1.default({
     store: connect_mongo_1.default.create({ mongoUrl: process.env.DB_URL }),
 }));
 app.use(middlewares_1.localsMiddleware);
+app.use("/uploads", express_1.default.static("uploads"));
 app.use("/", globalRouter_1.default);
 app.use("/user", userRouter_1.default);
 app.use("/video", videoRouter_1.default);

@@ -9,7 +9,11 @@ const userController_2 = require("../controllers/userController");
 const middlewares_1 = require("../middlewares");
 const userRouter = express_1.default.Router();
 userRouter.get("/logout", middlewares_1.protectorMiddleware, userController_2.logout);
-userRouter.route("/edit").all(middlewares_1.protectorMiddleware).get(userController_2.getEdit).post(userController_2.postEdit);
+userRouter
+    .route("/edit")
+    .all(middlewares_1.protectorMiddleware)
+    .get(userController_2.getEdit)
+    .post(middlewares_1.uploadFiles.single("avatar"), userController_2.postEdit);
 userRouter
     .route("/change-password")
     .all(middlewares_1.protectorMiddleware)

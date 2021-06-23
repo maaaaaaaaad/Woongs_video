@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import multer from "multer";
 
 export const localsMiddleware = (
   req: Request,
@@ -34,3 +35,5 @@ export const publicOnlyMiddleware = (
     return res.redirect("/");
   }
 };
+
+export const uploadFiles = multer({ dest: "uploads/" });

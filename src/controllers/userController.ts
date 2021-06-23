@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
+import alert from "alert";
 
 type CheckNameAndPassword = { userName: string; password: string };
 
@@ -184,12 +185,15 @@ export const getEdit = (req: Request, res: Response) => {
 
 export const postEdit = async (req: Request, res: Response) => {
   const {
-    session: { user: _id },
+    session: { user: _id, avatarUrl },
     body: { name, email, username, location },
+    file,
   } = req;
+
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
+      avatarUrl: file ? file.path : avatarUrl,
       userName: name,
       email,
       nickName: username,
@@ -198,6 +202,7 @@ export const postEdit = async (req: Request, res: Response) => {
     { new: true }
   );
   if (req.session.user) req.session.user = updateUser;
+  alert("Update Profile!");
   return res.redirect("/user/edit");
 };
 

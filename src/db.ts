@@ -4,6 +4,7 @@ type MongooseOption = {
   useNewUrlParser: boolean;
   useUnifiedTopology: boolean;
   useCreateIndex: boolean;
+  useFindAndModify: boolean;
 };
 
 type ConnectionValues = {
@@ -17,6 +18,7 @@ const options: MongooseOption = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
+  useFindAndModify: false,
 };
 
 mongoose.connect(url, options);

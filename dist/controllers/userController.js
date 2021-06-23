@@ -16,6 +16,7 @@ exports.watch = exports.remove = exports.postChangePassword = exports.getChangeP
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
+const alert_1 = __importDefault(require("alert"));
 const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.getJoin = getJoin;
 const postJoin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -165,8 +166,9 @@ const getEdit = (req, res) => {
 };
 exports.getEdit = getEdit;
 const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { session: { user: _id }, body: { name, email, username, location }, } = req;
+    const { session: { user: _id, avatarUrl }, body: { name, email, username, location }, file, } = req;
     const updateUser = yield UserForm_1.default.findByIdAndUpdate(_id, {
+        avatarUrl: file ? file.path : avatarUrl,
         userName: name,
         email,
         nickName: username,
@@ -174,6 +176,7 @@ const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }, { new: true });
     if (req.session.user)
         req.session.user = updateUser;
+    alert_1.default("Update Profile!");
     return res.redirect("/user/edit");
 });
 exports.postEdit = postEdit;
