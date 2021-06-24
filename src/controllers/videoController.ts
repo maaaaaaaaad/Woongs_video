@@ -18,6 +18,20 @@ export const home = async (req: Request, res: Response) => {
   }
 };
 
+export const watch = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const selectedVideo = await VideoModel.findById(id).exec();
+
+  if (selectedVideo === null) {
+    return res.status(404).render("404", { pageTitle: "Not Found" });
+  } else {
+    return res.render("watch", {
+      pageTitle: `${selectedVideo.title}`,
+      selectedVideo,
+    });
+  }
+};
+
 export const search = async (req: Request, res: Response) => {
   const { keyword } = req.query;
   let videoFind: VideoForm[] = [];
@@ -34,10 +48,12 @@ export const getUpload = (req: Request, res: Response) => {
 };
 
 export const postUpload = async (req: Request, res: Response) => {
+  const fileUrl = req.file?.path;
   const { title, description, hashtags }: PostReqElements = req.body;
   try {
     const videoData = new VideoModel({
       title,
+      fileUrl,
       description,
       hashtags: hashForm(hashtags),
     });
@@ -50,20 +66,6 @@ export const postUpload = async (req: Request, res: Response) => {
   }
 
   return res.redirect("/");
-};
-
-export const watch = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const selectedVideo = await VideoModel.findById(id).exec();
-
-  if (selectedVideo === null) {
-    return res.status(404).render("404", { pageTitle: "Not Found" });
-  } else {
-    return res.render("watch", {
-      pageTitle: `${selectedVideo.title}`,
-      selectedVideo,
-    });
-  }
 };
 
 export const getEdit = async (req: Request, res: Response) => {

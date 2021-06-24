@@ -13,7 +13,7 @@ userRouter
     .route("/edit")
     .all(middlewares_1.protectorMiddleware)
     .get(userController_2.getEdit)
-    .post(middlewares_1.uploadFiles.single("avatar"), userController_2.postEdit);
+    .post(middlewares_1.avatarUpload.single("avatar"), userController_2.postEdit);
 userRouter
     .route("/change-password")
     .all(middlewares_1.protectorMiddleware)
@@ -21,7 +21,7 @@ userRouter
     .post(userController_1.postChangePassword);
 userRouter.get("/github/start", middlewares_1.publicOnlyMiddleware, userController_2.startGithubLogin);
 userRouter.get("/github/callbackUrl", middlewares_1.publicOnlyMiddleware, userController_2.callbackGithubLogin);
-userRouter.get("/:id", userController_2.watch);
+userRouter.get("/:id", userController_2.see);
 userRouter.get("/delete", userController_2.remove);
 exports.default = userRouter;
 //# sourceMappingURL=userRouter.js.map

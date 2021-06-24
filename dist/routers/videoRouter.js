@@ -21,6 +21,6 @@ videoRouter
     .route("/upload")
     .all(middlewares_1.protectorMiddleware)
     .get(videoController_1.getUpload)
-    .post(videoController_1.postUpload);
+    .post(middlewares_1.videoUpload.single("video"), videoController_1.postUpload);
 exports.default = videoRouter;
 //# sourceMappingURL=videoRouter.js.map

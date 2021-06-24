@@ -238,10 +238,18 @@ export const postChangePassword = async (req: Request, res: Response) => {
   return res.redirect("/user/logout");
 };
 
-export const remove = (req: Request, res: Response) => {
-  return res.send("delete");
+export const see = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  return res.render("users/profile", {
+    pageTitle: user.userName,
+    user,
+  });
 };
 
-export const watch = (req: Request, res: Response) => {
-  return res.send("wat");
+export const remove = (req: Request, res: Response) => {
+  return res.send("delete");
 };

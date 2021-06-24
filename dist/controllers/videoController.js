@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVideo = exports.postEdit = exports.getEdit = exports.watch = exports.postUpload = exports.getUpload = exports.search = exports.home = void 0;
+exports.deleteVideo = exports.postEdit = exports.getEdit = exports.postUpload = exports.getUpload = exports.search = exports.watch = exports.home = void 0;
 const HashForm_1 = require("../models/HashForm");
 const VideoForm_1 = __importDefault(require("../models/VideoForm"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -26,6 +26,20 @@ const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.home = home;
+const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const selectedVideo = yield VideoForm_1.default.findById(id).exec();
+    if (selectedVideo === null) {
+        return res.status(404).render("404", { pageTitle: "Not Found" });
+    }
+    else {
+        return res.render("watch", {
+            pageTitle: `${selectedVideo.title}`,
+            selectedVideo,
+        });
+    }
+});
+exports.watch = watch;
 const search = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { keyword } = req.query;
     let videoFind = [];
@@ -42,10 +56,13 @@ const getUpload = (req, res) => {
 };
 exports.getUpload = getUpload;
 const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const fileUrl = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
     const { title, description, hashtags } = req.body;
     try {
         const videoData = new VideoForm_1.default({
             title,
+            fileUrl,
             description,
             hashtags: HashForm_1.hashForm(hashtags),
         });
@@ -60,20 +77,6 @@ const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     return res.redirect("/");
 });
 exports.postUpload = postUpload;
-const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    const selectedVideo = yield VideoForm_1.default.findById(id).exec();
-    if (selectedVideo === null) {
-        return res.status(404).render("404", { pageTitle: "Not Found" });
-    }
-    else {
-        return res.render("watch", {
-            pageTitle: `${selectedVideo.title}`,
-            selectedVideo,
-        });
-    }
-});
-exports.watch = watch;
 const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const selectedVideo = yield VideoForm_1.default.findById(id).exec();

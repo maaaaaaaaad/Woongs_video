@@ -1,6 +1,7 @@
 extends base.pug
 
 block content
+  selectedVideo(src="/" + selectedVideo.fileUrl, controls)
   div 
     p=selectedVideo.description 
     small=selectedVideo.createdAt

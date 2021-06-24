@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watch = exports.remove = exports.postChangePassword = exports.getChangePassword = exports.postEdit = exports.getEdit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
+exports.remove = exports.see = exports.postChangePassword = exports.getChangePassword = exports.postEdit = exports.getEdit = exports.logout = exports.callbackGithubLogin = exports.startGithubLogin = exports.postLogin = exports.getLogin = exports.postJoin = exports.getJoin = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
@@ -208,12 +208,20 @@ const postChangePassword = (req, res) => __awaiter(void 0, void 0, void 0, funct
     return res.redirect("/user/logout");
 });
 exports.postChangePassword = postChangePassword;
+const see = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const user = yield UserForm_1.default.findById(id);
+    if (!user) {
+        return res.status(404).render("404", { pageTitle: "User not found." });
+    }
+    return res.render("users/profile", {
+        pageTitle: user.userName,
+        user,
+    });
+});
+exports.see = see;
 const remove = (req, res) => {
     return res.send("delete");
 };
 exports.remove = remove;
-const watch = (req, res) => {
-    return res.send("wat");
-};
-exports.watch = watch;
 //# sourceMappingURL=userController.js.map
