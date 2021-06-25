@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideo = exports.postEdit = exports.getEdit = exports.postUpload = exports.getUpload = exports.search = exports.watch = exports.home = void 0;
 const HashForm_1 = require("../models/HashForm");
+const UserForm_1 = __importDefault(require("../models/UserForm"));
 const VideoForm_1 = __importDefault(require("../models/VideoForm"));
 const home = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,6 +30,7 @@ exports.home = home;
 const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const selectedVideo = yield VideoForm_1.default.findById(id).exec();
+    const owner = yield UserForm_1.default.findById(selectedVideo === null || selectedVideo === void 0 ? void 0 : selectedVideo.owner);
     if (selectedVideo === null) {
         return res.status(404).render("404", { pageTitle: "Not Found" });
     }
@@ -36,6 +38,7 @@ const watch = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         return res.render("watch", {
             pageTitle: `${selectedVideo.title}`,
             selectedVideo,
+            owner,
         });
     }
 });
@@ -57,12 +60,14 @@ const getUpload = (req, res) => {
 exports.getUpload = getUpload;
 const postUpload = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
+    const { session: { user: _id }, } = req;
     const fileUrl = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
     const { title, description, hashtags } = req.body;
     try {
         const videoData = new VideoForm_1.default({
             title,
             fileUrl,
+            owner: _id,
             description,
             hashtags: HashForm_1.hashForm(hashtags),
         });

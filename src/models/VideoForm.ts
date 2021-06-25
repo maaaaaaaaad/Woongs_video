@@ -12,6 +12,7 @@ export type VideoForm = {
     views: number;
     rating: number;
   };
+  owner: mongoose.Schema.Types.ObjectId;
 };
 
 const videoSchema = new mongoose.Schema<VideoForm>({
@@ -24,6 +25,7 @@ const videoSchema = new mongoose.Schema<VideoForm>({
     views: { type: Number, default: 0, required: true },
     rating: { type: Number, default: 0, required: true },
   },
+  owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
 });
 
 const VideoModel = mongoose.model<VideoForm>("Video", videoSchema);
