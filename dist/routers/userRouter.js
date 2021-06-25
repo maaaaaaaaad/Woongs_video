@@ -21,7 +21,7 @@ userRouter
     .post(userController_1.postChangePassword);
 userRouter.get("/github/start", middlewares_1.publicOnlyMiddleware, userController_2.startGithubLogin);
 userRouter.get("/github/callbackUrl", middlewares_1.publicOnlyMiddleware, userController_2.callbackGithubLogin);
-userRouter.get("/:id", userController_2.see);
+userRouter.get("/:id", userController_2.myProfile);
 userRouter.get("/delete", userController_2.remove);
 exports.default = userRouter;
 //# sourceMappingURL=userRouter.js.map

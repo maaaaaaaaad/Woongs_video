@@ -3,6 +3,7 @@ import fetch from "node-fetch";
 import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
 import alert from "alert";
+import VideoModel from "../models/VideoForm";
 
 type CheckNameAndPassword = { userName: string; password: string };
 
@@ -238,15 +239,19 @@ export const postChangePassword = async (req: Request, res: Response) => {
   return res.redirect("/user/logout");
 };
 
-export const see = async (req: Request, res: Response) => {
+export const myProfile = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await User.findById(id);
   if (!user) {
     return res.status(404).render("404", { pageTitle: "User not found." });
   }
+
+  const myVideos = await VideoModel.find({ owner: user._id });
+
   return res.render("users/profile", {
-    pageTitle: user.userName,
+    pageTitle: user.nickName,
     user,
+    myVideos,
   });
 };
 

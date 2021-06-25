@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { hashForm } from "../models/HashForm";
-import User from "../models/UserForm";
 import VideoModel, { VideoForm } from "../models/VideoForm";
 
 type PostReqElements = {
@@ -21,8 +20,8 @@ export const home = async (req: Request, res: Response) => {
 
 export const watch = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const selectedVideo = await VideoModel.findById(id).exec();
-  const owner = await User.findById(selectedVideo?.owner);
+  const selectedVideo = await VideoModel.findById(id).populate("owner");
+  console.log(selectedVideo);
 
   if (selectedVideo === null) {
     return res.status(404).render("404", { pageTitle: "Not Found" });
@@ -30,7 +29,6 @@ export const watch = async (req: Request, res: Response) => {
     return res.render("watch", {
       pageTitle: `${selectedVideo.title}`,
       selectedVideo,
-      owner,
     });
   }
 };

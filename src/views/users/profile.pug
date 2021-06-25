@@ -1,4 +1,7 @@
 extends ../base.pug
+include ../mixins/data.pug
 
 block content
-    h1 hello
+  h1 My Video Array
+  each video in myVideos
+    +data(video)

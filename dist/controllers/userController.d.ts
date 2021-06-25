@@ -10,5 +10,5 @@ export declare const getEdit: (req: Request, res: Response) => void;
 export declare const postEdit: (req: Request, res: Response) => Promise<void>;
 export declare const getChangePassword: (req: Request, res: Response) => void;
 export declare const postChangePassword: (req: Request, res: Response) => Promise<void>;
-export declare const see: (req: Request, res: Response) => Promise<void>;
+export declare const myProfile: (req: Request, res: Response) => Promise<void>;
 export declare const remove: (req: Request, res: Response) => Response<any, Record<string, any>>;

@@ -8,7 +8,7 @@ import {
   postEdit,
   remove,
   logout,
-  see,
+  myProfile,
   startGithubLogin,
   callbackGithubLogin,
 } from "../controllers/userController";
@@ -40,6 +40,6 @@ userRouter.get(
   callbackGithubLogin
 );
 
-userRouter.get("/:id", see);
+userRouter.get("/:id", myProfile);
 userRouter.get("/delete", remove);
 export default userRouter;

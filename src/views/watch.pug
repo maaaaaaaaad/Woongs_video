@@ -7,9 +7,10 @@ block content
     small=selectedVideo.createdAt
   
   div
-    small Uploaded by #{owner.nickName}
+    small Uploaded by 
+      a(href=`/user/${selectedVideo.owner._id}`) #{selectedVideo.owner.nickName}
     br
-    if String(selectedVideo.owner) === String(loggedInUser._id)
+    if String(selectedVideo.owner._id) === String(loggedInUser._id)
       a(href=`${selectedVideo.id}/edit`) Edit Video &rarr;
       br
       a(href=`${selectedVideo.id}/delete`) Delete Video &rarr;
