@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 import { Request, Response } from "express";
 import User, { UserForm } from "../models/UserForm";
 import alert from "alert";
-import VideoModel from "../models/VideoForm";
 
 type CheckNameAndPassword = { userName: string; password: string };
 
