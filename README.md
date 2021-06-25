@@ -172,3 +172,37 @@ export const publicOnlyMiddleware = (
 ```javascript
 app.use("/uploads", express.static("uploads"));
 ```
+
+## 8.Awesome mongoose populate
+
+- Basically, populate have connect object model.
+- For example, connection between user profile and user data
+
+```javascript
+const videoData = new VideoModel({
+  title,
+  fileUrl,
+  owner: _id,
+  description,
+  hashtags: hashForm(hashtags),
+});
+await videoData.save();
+```
+
+Create video data and next..
+
+```javascript
+const selectedVideo = await VideoModel.findById(id).populate("owner");
+```
+
+```javascript
+owner: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" }
+```
+
+Important ref: "User" to owner object. It's load User Shema model to owner.
+
+```javascript
+const myVideos = await VideoModel.find({ owner: user._id });
+```
+
+Finally, find to data that match user data.
