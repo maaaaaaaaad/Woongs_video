@@ -11,6 +11,7 @@ export type UserForm = {
   socialCheck?: boolean;
   avatarUrl: string;
   socialOnly: boolean;
+  videos: mongoose.Schema.Types.ObjectId[];
 };
 
 const userSchema = new mongoose.Schema<UserForm>({
@@ -21,6 +22,7 @@ const userSchema = new mongoose.Schema<UserForm>({
   location: { type: String, required: true },
   socialCheck: { type: Boolean, default: false },
   avatarUrl: { type: String },
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
 userSchema.pre("save", async function () {

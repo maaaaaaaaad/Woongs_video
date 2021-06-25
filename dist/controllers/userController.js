@@ -17,7 +17,6 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const UserForm_1 = __importDefault(require("../models/UserForm"));
 const alert_1 = __importDefault(require("alert"));
-const VideoForm_1 = __importDefault(require("../models/VideoForm"));
 const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 exports.getJoin = getJoin;
 const postJoin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -211,15 +210,13 @@ const postChangePassword = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.postChangePassword = postChangePassword;
 const myProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const user = yield UserForm_1.default.findById(id);
+    const user = yield UserForm_1.default.findById(id).populate("videos");
     if (!user) {
         return res.status(404).render("404", { pageTitle: "User not found." });
     }
-    const myVideos = yield VideoForm_1.default.find({ owner: user._id });
     return res.render("users/profile", {
         pageTitle: user.nickName,
         user,
-        myVideos,
     });
 });
 exports.myProfile = myProfile;

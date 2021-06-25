@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { hashForm } from "../models/HashForm";
+import User from "../models/UserForm";
 import VideoModel, { VideoForm } from "../models/VideoForm";
 
 type PostReqElements = {
@@ -55,22 +56,24 @@ export const postUpload = async (req: Request, res: Response) => {
   const fileUrl = req.file?.path;
   const { title, description, hashtags }: PostReqElements = req.body;
   try {
-    const videoData = new VideoModel({
+    const videoData = await VideoModel.create({
       title,
       fileUrl,
       owner: _id,
       description,
       hashtags: hashForm(hashtags),
     });
-    await videoData.save();
+
+    const user = await User.findById(_id);
+    user?.videos.push(videoData._id);
+    user?.save();
+    return res.redirect("/");
   } catch (error) {
     return res.status(400).render("upload", {
       pageTitle: `Upload`,
       errorMessage: `Error! ${error._message}`,
     });
   }
-
-  return res.redirect("/");
 };
 
 export const getEdit = async (req: Request, res: Response) => {
