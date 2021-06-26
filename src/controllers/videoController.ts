@@ -1,3 +1,4 @@
+import alert from "alert";
 import { Request, Response } from "express";
 import { hashForm } from "../models/HashForm";
 import User from "../models/UserForm";
@@ -82,6 +83,12 @@ export const getEdit = async (req: Request, res: Response) => {
   if (selectedVideo === null) {
     return res.status(404).render("404", { pageTitle: "Not Found" });
   }
+
+  if (String(selectedVideo.owner) !== req.session.user!._id) {
+    alert("Not acess");
+    return res.redirect("/");
+  }
+
   return res.render("edit", {
     pageTitle: `Edit ${selectedVideo.title}`,
     selectedVideo,
@@ -107,6 +114,14 @@ export const postEdit = async (req: Request, res: Response) => {
 
 export const deleteVideo = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const video = await VideoModel.findById(id);
+  if (!video) {
+    return res.status(404).render("404", { pageTitle: "Video not found." });
+  }
+  if (String(video.owner) !== req.session.user!._id) {
+    return res.status(403).redirect("/");
+  }
+
   await VideoModel.findByIdAndDelete(id);
   return res.redirect("/");
 };

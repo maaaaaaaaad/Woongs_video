@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteVideo = exports.postEdit = exports.getEdit = exports.postUpload = exports.getUpload = exports.search = exports.watch = exports.home = void 0;
+const alert_1 = __importDefault(require("alert"));
 const HashForm_1 = require("../models/HashForm");
 const UserForm_1 = __importDefault(require("../models/UserForm"));
 const VideoForm_1 = __importDefault(require("../models/VideoForm"));
@@ -89,6 +90,10 @@ const getEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (selectedVideo === null) {
         return res.status(404).render("404", { pageTitle: "Not Found" });
     }
+    if (String(selectedVideo.owner) !== req.session.user._id) {
+        alert_1.default("Not acess");
+        return res.redirect("/");
+    }
     return res.render("edit", {
         pageTitle: `Edit ${selectedVideo.title}`,
         selectedVideo,
@@ -112,6 +117,13 @@ const postEdit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.postEdit = postEdit;
 const deleteVideo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    const video = yield VideoForm_1.default.findById(id);
+    if (!video) {
+        return res.status(404).render("404", { pageTitle: "Video not found." });
+    }
+    if (String(video.owner) !== req.session.user._id) {
+        return res.status(403).redirect("/");
+    }
     yield VideoForm_1.default.findByIdAndDelete(id);
     return res.redirect("/");
 });

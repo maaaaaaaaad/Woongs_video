@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
 export type UserForm = {
+  _id: string;
   email: string;
   userName: string;
   password: string;
@@ -26,7 +27,10 @@ const userSchema = new mongoose.Schema<UserForm>({
 });
 
 userSchema.pre("save", async function () {
-  this.password = await bcrypt.hash(this.password, 5);
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 5);
+  }
 });
+
 const User = mongoose.model<UserForm>("User", userSchema);
 export default User;
