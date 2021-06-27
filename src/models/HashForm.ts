@@ -1,5 +1,5 @@
 import { Hashs } from "./VideoForm";
 
-export const hashForm = (item: any): Hashs => {
+export const hashForm = (item: string): Hashs => {
   return item.split(",").map((tag: string) => `#${tag}`);
 };

@@ -144,6 +144,7 @@ export const callbackGithubLogin = async (req: Request, res: Response) => {
         return res.redirect("/login");
       }
       let existsUserEmail = await User.findOne({ email: emailObject.email });
+
       if (!existsUserEmail) {
         existsUserEmail = await User.create({
           email: emailObject.email,

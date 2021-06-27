@@ -7,7 +7,7 @@ import VideoModel, { VideoForm } from "../models/VideoForm";
 type PostReqElements = {
   title: string;
   description: string;
-  hashtags: any;
+  hashtags: string;
 };
 
 export const home = async (req: Request, res: Response) => {

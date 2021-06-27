@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export type Hashs = [{ type: string }] | null;
+export type Hashs = string[];
 
 export type VideoForm = {
   title: string;
