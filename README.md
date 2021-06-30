@@ -1,5 +1,12 @@
 # Make the Youtube with these three stacks : Typescript, Node.js, MongoDB
 
+**Stack(SSR)**
+
+1. Back-End: Node JS with Typescript
+2. Template engine: Pug
+
+- In this project haven't CSS design and Front-End engine
+
 ## 1.Protect User Password from bcrypt
 
 ```javascript
