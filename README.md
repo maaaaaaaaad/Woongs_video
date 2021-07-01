@@ -2,10 +2,17 @@
 
 **Stack(SSR)**
 
-1. Back-End: Node JS with Typescript
+1. Back-End: NodeJS(Express) with Typescript
 2. Template engine: Pug
+3. Database: MongoDB(Mongoose)
 
 - In this project haven't CSS design and Front-End engine
+
+**Implement function**
+
+1. Create Account
+2. Login Auth with Github
+3. Video CRUD
 
 ## 1.Protect User Password from bcrypt
 
